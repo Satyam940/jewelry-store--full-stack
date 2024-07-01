@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import ring, Neckless , Review_Ring
+from .models import ring, Necklace , Review_Ring
 from django.shortcuts import get_object_or_404
 
 

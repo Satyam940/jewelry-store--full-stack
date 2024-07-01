@@ -12,8 +12,13 @@ urlpatterns = [
     path('ring/<int:ring_id>/like/', views.ring_like, name='ring_like'),
     path('ring/<int:ring_id>/review/', views.ring_review, name='ring_review'),
     
-    path('neckless/', views.neckless_list, name='neckless_list'),
-    path('neckless/<int:neckless_id>/', views.neckless_details, name='neckless_details'),
+    path('necklaces/', views.necklace_list, name='necklace_list'),
+    path('necklace/<int:necklace_id>/', views.necklace_details, name='necklace_details'),
+    path('necklace/<int:necklace_id>/like/', views.necklace_details, name='necklace_like'),
+    path('ring/<int:necklace_id>/review/', views.necklace_review, name='necklace_review'),
+
+
+  
 
     path('add_to_cart/<int:item_id>/<str:model_name>/', views.add_to_cart, name='add_to_cart'),
     path('cart/', views.cart_detail, name='cart_detail'),

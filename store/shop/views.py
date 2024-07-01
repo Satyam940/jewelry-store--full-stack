@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth import login , authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
-from .models import ring,Neckless,CartItem,Review_Ring
+from .models import ring,Necklace,CartItem,Review_Ring
 from .forms import SignUpForm,ReviewForm
 from django.contrib.auth.forms import AuthenticationForm
 
@@ -59,7 +59,6 @@ def ring_like(request, ring_id):
        
         return redirect('ring_detail', ring_id=ring_id)
 
-   
     ring_instance.increment_likes()
     ring_instance.liked_by.add(request.user)
 
@@ -68,23 +67,56 @@ def ring_like(request, ring_id):
 
 
 
+@login_required
+def necklace_review(request , necklace_id):
+    necklace_obj = get_object_or_404(Necklace , id = necklace_id)
+    reviews = necklace_obj.Necklace_reviews.all()
+    if request.method == 'POST':
+        review_form = ReviewForm(request.POST)
+        if review_form.is_valid():
+            review = review_form.save(commit=False)
+            review.product = necklace_obj
+            review.user = request.user
+            review.save()
+            return redirect('necklace_details' , necklace_id=necklace_id)
+    else:
+        review_form= ReviewForm()
+
+    return render(request, 'necklace/order.html',{
+        'necklace': necklace_obj,
+        'reviews': reviews,
+        'review_form': review_form
+
+
+    })
 
 
 
+def necklace_list(request):
+    necklace = Necklace.objects.all()
+    return render(request,'necklace/necklace.html',{'necklace':necklace})
 
 
+def necklace_details(request , necklace_id):
+    necklace=get_object_or_404(Necklace , id=necklace_id)
+    stock = range(1,necklace.stock+1)
+    return render(request,'necklace/order.html',{'necklace':necklace , 'stock':stock})
 
-def neckless_list(request):
-    neckless = Neckless.objects.all()
-    return render(request,'neckless/neckless.html',{'neckless':neckless})
+@login_required
+def necklace_like(request , necklace_id):
+    necklace_instance = get_object_or_404(Necklace , id = necklace_id)
+    if request.user in necklace_instance.liked_by.all():
+        necklace_instance.liked_by.remove(request.user)
+        necklace_instance.decrement_likes()
+
+        return redirect('necklace_details' , necklace_id = necklace_id)
+
+    necklace_instance.increment_likes()
+    necklace_instance.liked_by.add(request.user)
+
+    return render('necklace_details' , necklace_id=necklace_id)
 
 
-def neckless_details(request , neckless_id):
-    necklesss=get_object_or_404(Neckless , id=neckless_id)
-    stock = range(1,necklesss.stock+1)
-   
-
-    return render(request,'neckless/order.html',{'necklesss':necklesss , 'stock':stock})
 
 
 
