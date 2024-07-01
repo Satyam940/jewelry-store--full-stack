@@ -1,0 +1,104 @@
+{% extends "layout.html" %} {% load static %}
+
+
+{% block content %}
+
+
+<div class="bg-gray-100">
+  <div class="relative w-full">
+      <div class="overflow-hidden relative h-full">
+          <div class="flex transition-transform duration-300 ease-in-out" id="slider">
+              <div class="min-w-full h-full" style="flex: 0 0 33.33%; max-width: 33.33%;">
+                  <img src="{% static 'banner.jpg'%}" class="w-full h-full object-cover" alt="Slide 1">
+              </div>
+              <div class="min-w-full h-full"style="flex: 0 0 33.33%; max-width: 33.33%;">
+                  <img src="{% static 'banner1.png'%}" class="w-full h-full object-cover" alt="Slide 2">
+              </div>
+              <div class="min-w-full h-full"style="flex: 0 0 33.33%; max-width: 33.33%;">
+                  <img src="{% static '4.jpg'%}" class="w-full h-full object-cover" alt="Slide 3">
+              </div>
+          </div>
+      </div>
+
+  </div>    
+
+  <script>
+    let currentIndex = 0;
+    const slides = document.querySelectorAll('#slider > div');
+    const totalSlides = slides.length;
+
+    function showSlide(index) {
+        const slider = document.getElementById('slider');
+        slider.style.transform = 'translateX(' + (-index * 100) + '%)';
+    }
+
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % totalSlides;
+        showSlide(currentIndex);
+    }
+
+    function prevSlide() {
+        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+        showSlide(currentIndex);
+    }
+
+    // Auto-slide functionality
+    function startAutoSlide() {
+        setInterval(() => {
+            nextSlide();
+        }, 3000); // Change slide every 3 seconds
+    }
+
+    // Start the auto-slide when the page loads
+    window.onload = startAutoSlide;
+</script>
+</div>
+
+
+
+<h3 class=" font-medium font-serif text-center" style="font-size: xx-large;">SHOP BY CATEGORY</h3>
+
+<div class="items flex gap-6 ml-40 mt-10 mb-10">
+
+<div class="relative max-w-xs overflow-hidden bg-cover bg-no-repeat rounded-t-full rounded-b-full h-60">
+    <a href="{% url "neckless_list" %}">
+    <img
+      src="{% static "pendant.jpg" %}"
+      class="max-w-xs transition duration-300 ease-in-out hover:scale-110 "
+      /></a>
+</div>
+<div class="relative max-w-xs overflow-hidden bg-cover bg-no-repeat rounded-t-full rounded-b-full ">
+    <a href="#">
+    <img
+      src="https://img.freepik.com/premium-photo/gold-rings-with-diamonds-black-background_579873-3016.jpg"
+      class="max-w-xs transition duration-300 ease-in-out hover:scale-110  object-cover object-center w-full h-full"/>
+    </a>
+  </div><div class="relative max-w-xs overflow-hidden bg-cover bg-no-repeat rounded-t-full rounded-b-full h-60 ">
+    <a href="{% url "ring_list" %}">
+    <img
+      src="https://img.pikbest.com/wp/202405/amber-3d-rendering-of-an-isolated-black-background-gold-diamond-ring_9827298.jpg!sw800"
+      class="max-w-xs transition duration-300 ease-in-out hover:scale-110 object-cover object-center w-full h-full"
+       /></a>
+  </div>
+
+</div>
+
+
+   
+
+  
+
+
+
+
+
+{% endblock %}
+{% block video %}
+
+<div class="video " style="padding: 0px 142px 0px 113px; ">
+    <video  class="h-full w-full rounded-lg" controls muted loop autoPlay>
+        <source src="{% static "JEWELLERY.mp4" %}" type="video/mp4" />
+    </video>
+</div>
+
+{% endblock %}

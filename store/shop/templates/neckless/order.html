@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="neckless-details">
+    <h2>{{ necklesss.name }}</h2>
+    <img src="{{ necklesss.image.url }}" alt="Neckless Image">
+    <p>{{ necklesss.description }}</p>
+    <p>{{ necklesss.price }}</p>
+   
+</div>
+{% endblock %}
