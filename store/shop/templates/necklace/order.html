@@ -142,7 +142,7 @@
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 {% if reviews %}
-    {% for review in reviews  %}
+{% for review in reviews|slice:":5" %}
         <div class="flex items-start">
             <div class="flex-shrink-0">
             <div class="inline-block relative">

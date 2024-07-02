@@ -20,18 +20,21 @@ def ring_list(request):
 
 
 def ring_detail(request, ring_id):
+    
     Ring =  get_object_or_404(ring, id=ring_id )
+    reviews = Review_Ring.objects.all()
+
      
-    return render(request, 'ring/order.html',{'ring':Ring})
+    return render(request, 'ring/order.html',{
+        'ring':Ring,
+        'reviews':reviews,
+        })
 
 
 @login_required
 def ring_review(request, ring_id):
     ring_instance = get_object_or_404(ring, id=ring_id)
   
-    reviews = Review_Ring.objects.filter(product=ring_instance).order_by('-id')
-
-    
     if request.method == 'POST':    
         review_form = ReviewForm(request.POST)
         if review_form.is_valid():
@@ -45,10 +48,32 @@ def ring_review(request, ring_id):
 
     return render(request, 'ring/order.html', {
         'ring': ring_instance,
-        'reviews': reviews,
         'review_form': review_form,
     })
 
+
+
+@login_required
+def ring_detail(request, ring_id):
+    ring_instance = get_object_or_404(ring, id=ring_id)
+    reviews = Review_Ring.objects.filter(product=ring_instance).order_by('-create_at')
+
+    if request.method == 'POST':
+        review_form = ReviewForm(request.POST)
+        if review_form.is_valid():
+            review = review_form.save(commit=False)
+            review.product = ring_instance
+            review.user = request.user
+            review.save()
+            return redirect('ring_detail', ring_id=ring_id)  # Redirect back to the same page after review submission
+    else:
+        review_form = ReviewForm()
+
+    return render(request, 'ring/order.html', {
+        'ring': ring_instance,
+        'reviews': reviews,
+        'review_form': review_form,
+    })
 
 
 @login_required
@@ -65,6 +90,8 @@ def ring_like(request, ring_id):
     ring_instance.liked_by.add(request.user)
 
     return redirect('ring_detail', ring_id=ring_id)
+
+
 
 
 
