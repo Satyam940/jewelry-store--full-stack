@@ -88,7 +88,7 @@ class Review_Ring(models.Model):
     user = models.ForeignKey(User , on_delete=models.CASCADE)
     rating = models.IntegerField()
     comment = models.TextField()
-    create_at = models.DateTimeField(auto_now=True)
+    create_at = models.DateTimeField(auto_now_add=True)
 
 
     def __str__(self):
@@ -97,14 +97,17 @@ class Review_Ring(models.Model):
 
 
 class Review_Necklace(models.Model):
-    product = models.ForeignKey('ring',on_delete=models.CASCADE , related_name='Necklace_reviews')
-    user = models.ForeignKey(User , on_delete=models.CASCADE)
+    product = models.ForeignKey('Necklace', on_delete=models.CASCADE, related_name='necklace_reviews')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     rating = models.IntegerField()
     comment = models.TextField()
-    create_at = models.DateTimeField(auto_now=True)
-
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f' Reviews By {self.user.username}'
+        return f'Reviews by {self.user.username}'
+
+    
+
+
 
 

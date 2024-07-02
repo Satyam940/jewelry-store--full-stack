@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import ring, Necklace , Review_Ring
+from .models import ring, Necklace , Review_Ring, Review_Necklace
 from django.shortcuts import get_object_or_404
 
 
@@ -16,6 +16,15 @@ class SignUpForm(UserCreationForm):
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review_Ring
+        fields = ['rating','comment']
+        widgets = {
+            'rating': forms.NumberInput(attrs={'min': 1, 'max': 5}),
+        }
+
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review_Necklace
         fields = ['rating','comment']
         widgets = {
             'rating': forms.NumberInput(attrs={'min': 1, 'max': 5}),

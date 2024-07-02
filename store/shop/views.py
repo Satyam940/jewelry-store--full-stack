@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth import login , authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
-from .models import ring,Necklace,CartItem,Review_Ring
+from .models import ring,Necklace,CartItem,Review_Ring, Review_Necklace
 from .forms import SignUpForm,ReviewForm
 from django.contrib.auth.forms import AuthenticationForm
 
@@ -28,7 +28,9 @@ def ring_detail(request, ring_id):
 @login_required
 def ring_review(request, ring_id):
     ring_instance = get_object_or_404(ring, id=ring_id)
-    reviews = ring_instance.Ring_reviews.all()
+  
+    reviews = Review_Ring.objects.filter(product=ring_instance).order_by('-id')
+
     
     if request.method == 'POST':    
         review_form = ReviewForm(request.POST)
@@ -68,9 +70,10 @@ def ring_like(request, ring_id):
 
 
 @login_required
-def necklace_review(request , necklace_id):
-    necklace_obj = get_object_or_404(Necklace , id = necklace_id)
-    reviews = necklace_obj.Necklace_reviews.all()
+def necklace_review(request, necklace_id):
+    necklace_obj = get_object_or_404(Necklace, id=necklace_id)
+    reviews = Review_Necklace.objects.filter(product=necklace_obj).order_by('-id')
+
     if request.method == 'POST':
         review_form = ReviewForm(request.POST)
         if review_form.is_valid():
@@ -78,16 +81,14 @@ def necklace_review(request , necklace_id):
             review.product = necklace_obj
             review.user = request.user
             review.save()
-            return redirect('necklace_details' , necklace_id=necklace_id)
+            return redirect('necklace_details', necklace_id=necklace_id)
     else:
-        review_form= ReviewForm()
+        review_form = ReviewForm()
 
-    return render(request, 'necklace/order.html',{
+    return render(request, 'necklace/order.html', {
         'necklace': necklace_obj,
         'reviews': reviews,
         'review_form': review_form
-
-
     })
 
 
