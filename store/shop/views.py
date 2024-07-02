@@ -115,7 +115,7 @@ def necklace_like(request , necklace_id):
     necklace_instance.increment_likes()
     necklace_instance.liked_by.add(request.user)
 
-    return render('necklace_details' , necklace_id=necklace_id)
+    return redirect('necklace_details' , necklace_id = necklace_id)
 
 
 

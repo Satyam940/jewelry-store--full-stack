@@ -71,16 +71,14 @@ class Bangles(models.Model):
 
 
 class CartItem(models.Model):
-    user = models.ForeignKey(User , on_delete=models.CASCADE )
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField(default=1)
+    object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
     quantity = models.PositiveIntegerField(default=1)
 
-
     def __str__(self):
-        return f"{self.user.username} - {self.content_object.name})"
-    
+        return f"{self.user.username} - {self.content_object}"
 
 
 class Review_Ring(models.Model):

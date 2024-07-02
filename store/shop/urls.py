@@ -14,7 +14,7 @@ urlpatterns = [
     
     path('necklaces/', views.necklace_list, name='necklace_list'),
     path('necklace/<int:necklace_id>/', views.necklace_details, name='necklace_details'),
-    path('necklace/<int:necklace_id>/like/', views.necklace_details, name='necklace_like'),
+    path('necklace/<int:necklace_id>/like/', views.necklace_like, name='necklace_like'),
     path('necklace/<int:necklace_id>/review/', views.necklace_review, name='necklace_review'),
 
 
