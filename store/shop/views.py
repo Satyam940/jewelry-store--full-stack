@@ -123,7 +123,7 @@ def necklace_like(request , necklace_id):
 
 @login_required
 def add_to_cart(request, item_id, model_name):
-    content_type = ContentType.objects.get(model=model_name)
+    content_type = ContentType.objects.get(model=model_name.lower())
     item = get_object_or_404(content_type.model_class(), id=item_id)
     cart_item, created = CartItem.objects.get_or_create(
         user=request.user, content_type=content_type, object_id=item_id
