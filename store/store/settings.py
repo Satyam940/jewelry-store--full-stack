@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-x+tv7a#y&2km*x!1i^d@c6fko7*naq%-a6i)pt$!d8h&@55dpg'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['jewelry-store.onrender.com']
 
 
 # Application definition
@@ -143,6 +143,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATIC_URL = '/static/' 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+
 
 
 LOGIN_URL = '/accounts/login'
