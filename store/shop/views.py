@@ -53,8 +53,6 @@ def ring_detail(request, ring_id):
 
 
 
-
-
 @login_required
 def ring_like(request, ring_id):
     ring_instance = get_object_or_404(ring, id=ring_id)
@@ -72,16 +70,12 @@ def ring_like(request, ring_id):
 
 
 
-
-
-
 @login_required
 def necklace_review(request, necklace_id):
     necklace_obj = get_object_or_404(Necklace, id=necklace_id)
-    reviews = Review_Necklace.objects.filter(product=necklace_obj).order_by('-id')
 
     if request.method == 'POST':
-        review_form = ReviewForm(request.POST)
+        review_form = Necklace_Review(request.POST)
         if review_form.is_valid():
             review = review_form.save(commit=False)
             review.product = necklace_obj
@@ -89,12 +83,14 @@ def necklace_review(request, necklace_id):
             review.save()
             return redirect('necklace_details', necklace_id=necklace_id)
     else:
-        review_form = ReviewForm()
+        review_form = Necklace_Review()
+
+    show_form = request.GET.get('show_from' , False)
 
     return render(request, 'necklace/order.html', {
         'necklace': necklace_obj,
-        'reviews': reviews,
-        'review_form': review_form
+        'review_form': review_form,
+        'show_form':show_form,
     })
 
 
@@ -105,9 +101,15 @@ def necklace_list(request):
 
 
 def necklace_details(request , necklace_id):
-    necklace=get_object_or_404(Necklace , id=necklace_id)
-    stock = range(1,necklace.stock+1)
-    return render(request,'necklace/order.html',{'necklace':necklace , 'stock':stock})
+    necklace = get_object_or_404(Necklace , id=necklace_id)
+    reviews = Review_Necklace.objects.filter(product=necklace).order_by('-created_at')
+    review_count = reviews.count()
+    return render(request,'necklace/order.html',{
+        'necklace':necklace,
+        'reviews':reviews,
+        'review_count':review_count,
+        
+        })
 
 @login_required
 def necklace_like(request , necklace_id):
@@ -122,9 +124,6 @@ def necklace_like(request , necklace_id):
     necklace_instance.liked_by.add(request.user)
 
     return redirect('necklace_details' , necklace_id = necklace_id)
-
-
-
 
 
 @login_required
