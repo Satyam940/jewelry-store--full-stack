@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block content %}
+<form action="{% url 'payment_success' %}" method="POST">
+    {% csrf_token %}
+    <script src="https://checkout.razorpay.com/v1/checkout.js"
+            data-key="{{ razorpay_key }}"
+            data-amount="{{ amount }}"
+            data-currency="INR"
+            data-order_id="{{ order_id }}">
+    </script>
+    <input type="hidden" name="razorpay_order_id" value="{{ order_id }}">
+</form>
+
+{% endblock %}

@@ -6,6 +6,11 @@ from django.contrib.contenttypes.models import ContentType
 from .models import ring,Necklace,CartItem,Review_Ring, Review_Necklace
 from .forms import SignUpForm,Ring_Review,Necklace_Review
 from django.contrib.auth.forms import AuthenticationForm
+from django.conf import settings
+import razorpay
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 
 
 def index(request):
@@ -148,7 +153,8 @@ def remove_from_cart(request, item_id, model_name):
 @login_required
 def cart_detail(request):
     cart_items = CartItem.objects.filter(user=request.user)
-    return render(request, 'cart_detail.html', {'cart_items': cart_items})
+    total_amount = sum(item.content_object.price * item.quantity for item in cart_items)
+    return render(request, 'cart_detail.html', {'cart_items': cart_items, 'total_amount': total_amount})
 
 
 
@@ -199,6 +205,59 @@ def login_view(request):
     
 
 
+
+
+@login_required
+def create_razorpay_order(request):
+    if request.method == "POST":
+        cart_items = CartItem.objects.filter(user=request.user)
+        total_amount = sum(item.content_object.price * item.quantity for item in cart_items)
+        total_amount_paise = int(total_amount * 100)
+
+        client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+        order_data = {
+            'amount': total_amount_paise,
+            'currency': 'INR',
+            'payment_capture': '1'
+        }
+        order = client.order.create(data=order_data)
+
+        return render(request, 'payment/payment_page.html', {
+            'order_id': order['id'],
+            'razorpay_key': settings.RAZORPAY_KEY_ID,
+            'amount': total_amount_paise
+        })
+
+    return HttpResponse("Method not allowed", status=405)
+
+@csrf_exempt
+def payment_success(request):
+    if request.method == 'POST':
+        client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+        
+        params_dict = {
+            'razorpay_order_id': request.POST.get('razorpay_order_id', ''),
+            'razorpay_payment_id': request.POST.get('razorpay_payment_id', ''),
+            'razorpay_signature': request.POST.get('razorpay_signature', '')
+        }
+
+        try:
+            client.utility.verify_payment_signature(params_dict)
+            payment = client.payment.fetch(params_dict['razorpay_payment_id'])
+            return render(request, 'payment/payment_success.html', {
+                'payment_id': payment['id'],
+                'order_id': params_dict['razorpay_order_id'],
+                'amount': payment['amount'] / 100,
+                'currency': payment['currency'],
+                'status': payment['status'],
+                'method': payment['method'],
+                'email': payment['email'],
+                'contact': payment['contact'],
+            })
+        except razorpay.errors.SignatureVerificationError:
+            return render(request, 'payment/payment_failure.html')
+
+    return JsonResponse({'status': 'Invalid request'}, status=400)
 
 
 

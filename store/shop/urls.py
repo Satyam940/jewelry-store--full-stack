@@ -32,6 +32,11 @@ urlpatterns = [
 
 
 
+    path('create_order/', views.create_razorpay_order, name='create_razorpay_order'),
+    path('payment_success/', views.payment_success, name='payment_success'),
+
+
+
 
 
 

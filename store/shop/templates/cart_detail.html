@@ -55,4 +55,18 @@
     </div>
 </section>
 
+
+<h1>Cart Details</h1>
+    <ul>
+        {% for item in cart_items %}
+            <li>{{ item.content_object.name }} - {{ item.quantity }} x {{ item.content_object.price }}</li>
+        {% endfor %}
+    </ul>
+    <p>Total Amount: ₹{{ total_amount }}</p>
+    <form action="{% url 'create_razorpay_order' %}" method="post">
+        {% csrf_token %}
+        <!-- Other form fields -->
+        <button type="submit">Proceed to Pay</button>
+    </form>
+
 {% endblock %}
