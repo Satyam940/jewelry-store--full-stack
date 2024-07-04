@@ -10,6 +10,8 @@ urlpatterns = [
     path('rings/', views.ring_list, name='ring_list'),
     path('ring/<int:ring_id>/', views.ring_detail, name='ring_detail'),  
     path('ring/<int:ring_id>/like/', views.ring_like, name='ring_like'),
+    path('ring/<int:ring_id>/review/', views.ring_review, name='ring_review'),
+
     
     path('necklaces/', views.necklace_list, name='necklace_list'),
     path('necklace/<int:necklace_id>/', views.necklace_details, name='necklace_details'),

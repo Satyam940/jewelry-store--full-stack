@@ -4,11 +4,10 @@ from django.contrib.auth import login , authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from .models import ring,Necklace,CartItem,Review_Ring, Review_Necklace
-from .forms import SignUpForm,ReviewForm
+from .forms import SignUpForm,Ring_Review,Necklace_Review
 from django.contrib.auth.forms import AuthenticationForm
 
 
-@login_required
 def index(request):
     return render(request , 'index.html')
 
@@ -18,25 +17,12 @@ def ring_list(request):
     return render(request , 'ring/ring.html',{'rings':rings})
  
 
-
-def ring_detail(request, ring_id):
-    
-    Ring =  get_object_or_404(ring, id=ring_id )
-    reviews = Review_Ring.objects.all()
-
-     
-    return render(request, 'ring/order.html',{
-        'ring':Ring,
-        'reviews':reviews,
-        })
-
-
 @login_required
 def ring_review(request, ring_id):
     ring_instance = get_object_or_404(ring, id=ring_id)
-  
-    if request.method == 'POST':    
-        review_form = ReviewForm(request.POST)
+
+    if request.method == 'POST':
+        review_form = Ring_Review(request.POST)
         if review_form.is_valid():
             review = review_form.save(commit=False)
             review.product = ring_instance
@@ -44,36 +30,29 @@ def ring_review(request, ring_id):
             review.save()
             return redirect('ring_detail', ring_id=ring_id)
     else:
-        review_form = ReviewForm()
+        review_form = Ring_Review()
+    show_form =request.GET.get('show_form', False)
 
     return render(request, 'ring/order.html', {
         'ring': ring_instance,
         'review_form': review_form,
+        'show_form':show_form,
     })
 
-
-
-@login_required
 def ring_detail(request, ring_id):
     ring_instance = get_object_or_404(ring, id=ring_id)
     reviews = Review_Ring.objects.filter(product=ring_instance).order_by('-create_at')
-
-    if request.method == 'POST':
-        review_form = ReviewForm(request.POST)
-        if review_form.is_valid():
-            review = review_form.save(commit=False)
-            review.product = ring_instance
-            review.user = request.user
-            review.save()
-            return redirect('ring_detail', ring_id=ring_id)  # Redirect back to the same page after review submission
-    else:
-        review_form = ReviewForm()
+    review_count = reviews.count()
 
     return render(request, 'ring/order.html', {
         'ring': ring_instance,
         'reviews': reviews,
-        'review_form': review_form,
+        'review_count':review_count,
     })
+
+
+
+
 
 
 @login_required
@@ -186,7 +165,7 @@ def signup(request):
             user.set_password(form.cleaned_data['password1'])
             form.save()
             login(request , user)
-            return redirect('index')
+            return redirect('login_view')
     else:
         form = SignUpForm()
     return render( request , 'registration/register.html', {'form':form})
