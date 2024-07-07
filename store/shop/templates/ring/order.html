@@ -114,10 +114,8 @@
                       </div>
                       <form action="{% url 'add_to_cart' ring.id 'ring' %}" method='post'>
                         {% csrf_token %}
-                        <button class="group py-4 px-5 rounded-full bg-indigo-50 text-indigo-600 font-semibold text-lg w-full flex items-center justify-center gap-2 transition-all duration-500 hover:bg-indigo-100" type='submit'>
-                          Add to Cart
-
-                          </button>
+                        <button id="add-to-cart-btn"  class="group py-4 px-5 rounded-full bg-indigo-50 text-indigo-600 font-semibold text-lg w-full flex items-center justify-center gap-2 transition-all duration-500 hover:bg-indigo-100" type='submit'>
+                          Add to Cart</button>                         
                       </form>
                   </div>
                   <div class="flex items-center gap-3">

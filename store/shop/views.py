@@ -3,14 +3,15 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth import login , authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
-from .models import ring,Necklace,CartItem,Review_Ring, Review_Necklace
-from .forms import SignUpForm,Ring_Review,Necklace_Review
+from .models import ring,Necklace,CartItem,Review_Ring, Review_Necklace,Order,OrderItem
+from .forms import SignUpForm,Ring_Review,Necklace_Review,OrderForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.conf import settings
 import razorpay
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from decimal import Decimal
 
 
 def index(request):
@@ -48,6 +49,7 @@ def ring_detail(request, ring_id):
     ring_instance = get_object_or_404(ring, id=ring_id)
     reviews = Review_Ring.objects.filter(product=ring_instance).order_by('-create_at')
     review_count = reviews.count()
+    
 
     return render(request, 'ring/order.html', {
         'ring': ring_instance,
@@ -154,7 +156,21 @@ def remove_from_cart(request, item_id, model_name):
 def cart_detail(request):
     cart_items = CartItem.objects.filter(user=request.user)
     total_amount = sum(item.content_object.price * item.quantity for item in cart_items)
-    return render(request, 'cart_detail.html', {'cart_items': cart_items, 'total_amount': total_amount})
+    tax_rate = Decimal('5.0') 
+    tax_amount = total_amount * (tax_rate / 100)
+    tax_amount = '{:.2f}'.format(tax_amount)
+    StorePickup = 150
+    Discount = 500
+    Final_amount = Decimal(tax_amount) + int(total_amount) + StorePickup - Discount
+    return render(request, 'cart_detail.html', {
+        'cart_items': cart_items,
+        'total_amount': total_amount,
+        'tax_amount': tax_amount,
+        'StorePickup':StorePickup,
+        'Discount':Discount,
+        'Final_amount': Final_amount
+        
+        })
 
 
 
@@ -203,32 +219,39 @@ def login_view(request):
 
             
     
-
-
-
-
 @login_required
 def create_razorpay_order(request):
-    if request.method == "POST":
+    if request.method == 'POST':
         cart_items = CartItem.objects.filter(user=request.user)
         total_amount = sum(item.content_object.price * item.quantity for item in cart_items)
-        total_amount_paise = int(total_amount * 100)
+        tax_rate = Decimal('5.0')
+        tax_amount = total_amount * (tax_rate / 100)
+        store_pickup = Decimal('150')
+        discount = Decimal('500')
+        final_amount = total_amount + tax_amount + store_pickup - discount
+        total_amount_paise = int(final_amount * 100)
 
         client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
-        order_data = {
+        razorpay_order = client.order.create({
             'amount': total_amount_paise,
             'currency': 'INR',
             'payment_capture': '1'
-        }
-        order = client.order.create(data=order_data)
-
-        return render(request, 'payment/payment_page.html', {
-            'order_id': order['id'],
-            'razorpay_key': settings.RAZORPAY_KEY_ID,
-            'amount': total_amount_paise
         })
 
-    return HttpResponse("Method not allowed", status=405)
+        context = {
+            'razorpay_order_id': razorpay_order['id'],
+            'razorpay_key': settings.RAZORPAY_KEY_ID,
+            'amount': total_amount_paise,
+        }
+
+        return render(request, 'payment/payment_page.html', context)
+    else:
+        return HttpResponse("Method not allowed", status=405)
+
+
+
+
+
 
 @csrf_exempt
 def payment_success(request):
@@ -244,6 +267,8 @@ def payment_success(request):
         try:
             client.utility.verify_payment_signature(params_dict)
             payment = client.payment.fetch(params_dict['razorpay_payment_id'])
+            CartItem.objects.filter(user=request.user).delete()
+
             return render(request, 'payment/payment_success.html', {
                 'payment_id': payment['id'],
                 'order_id': params_dict['razorpay_order_id'],
@@ -251,7 +276,7 @@ def payment_success(request):
                 'currency': payment['currency'],
                 'status': payment['status'],
                 'method': payment['method'],
-                'email': payment['email'],
+                'email': payment['email'], 
                 'contact': payment['contact'],
             })
         except razorpay.errors.SignatureVerificationError:
@@ -262,3 +287,43 @@ def payment_success(request):
 
 
 
+# @login_required
+# def create_order(request):
+#     if request.method == 'POST':
+#         form = OrderForm(request.POST)
+#         if form.is_valid():
+#             order = form.save(commit=False)
+#             order.user = request.user
+
+#             cart_items = CartItem.objects.filter(user=request.user)
+#             total_amount = sum(item.content_object.price * item.quantity for item in cart_items)
+#             tax_rate = Decimal('5.0')
+#             order.tax_amount = total_amount * (tax_rate / 100)
+#             order.store_pickup = Decimal('150')
+#             order.discount = Decimal('500')
+#             order.final_amount = total_amount + order.tax_amount + order.store_pickup - order.discount
+#             order.total_amount = total_amount
+#             order.save()
+
+
+#             # Create Razorpay order
+#             client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+#             razorpay_order = client.order.create({
+#                 'amount': int(order.final_amount * 100),  # Amount in paise
+#                 'currency': 'INR',
+#                 'payment_capture': '1'
+#             })
+#             order.razorpay_order_id = razorpay_order['id']
+#             order.save()
+
+#             context = {
+#                 'order': order,
+#                 'razorpay_order_id': razorpay_order['id'],
+#                 'razorpay_key': settings.RAZORPAY_KEY_ID,
+#                 'amount': int(order.final_amount * 100),  # Amount in paise
+#             }
+#             return render(request, 'payment/payment_page.html', context)
+#     else:
+#         form = OrderForm()
+    
+#     return render(request, 'payment/create_order.html', {'form': form})

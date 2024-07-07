@@ -3,6 +3,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+from django.utils import timezone
+
+time = timezone.now()
 
 class ring(models.Model):
     name = models.CharField(max_length=100)
@@ -109,3 +112,32 @@ class Review_Necklace(models.Model):
 
 
 
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    razorpay_order_id = models.CharField(max_length=100, blank=True, null=True)
+    address = models.CharField(max_length=255)
+    email = models.EmailField()
+    phone_number = models.CharField(max_length=15)
+    tax_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    store_pickup = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    discount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    final_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    created_at = models.DateTimeField(auto_now_add=True)
+    city = models.CharField(max_length=100, default='null')
+    state = models.CharField(max_length=100, default='null')
+
+    def __str__(self):
+        return f"Order #{self.id}"
+    
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+    quantity = models.PositiveIntegerField(default=1)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.quantity} of {self.content_object} in Order #{self.order.id}"

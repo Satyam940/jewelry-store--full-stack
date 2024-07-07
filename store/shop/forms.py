@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Review_Ring, Review_Necklace
+from .models import Review_Ring, Review_Necklace , Order
 from django.shortcuts import get_object_or_404
 
 
@@ -29,4 +29,10 @@ class Necklace_Review(forms.ModelForm):
         widgets = {
             'rating': forms.NumberInput(attrs={'min': 1, 'max': 5}),
         }
+
+
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ['address' , 'email', 'phone_number', 'city', 'state']
 

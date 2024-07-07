@@ -2,15 +2,55 @@
 {% load static %}
 
 {% block content %}
-<form action="{% url 'payment_success' %}" method="POST">
+
+
+
+<!-- payment_page.html -->
+<h2>Complete Your Payment</h2>
+<form id="paymentForm" method="POST" action="{% url 'payment_success' %}">
     {% csrf_token %}
-    <script src="https://checkout.razorpay.com/v1/checkout.js"
-            data-key="{{ razorpay_key }}"
-            data-amount="{{ amount }}"
-            data-currency="INR"
-            data-order_id="{{ order_id }}">
-    </script>
-    <input type="hidden" name="razorpay_order_id" value="{{ order_id }}">
+    <input type="hidden" name="razorpay_order_id" id="razorpay_order_id" value="{{ razorpay_order_id }}">
+    <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
+    <input type="hidden" name="razorpay_signature" id="razorpay_signature">
 </form>
 
-{% endblock %}
+<button id="payButton">Pay with Razorpay</button>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    document.getElementById('payButton').addEventListener('click', function() {
+        const options = {
+            key: "{{ razorpay_key }}",
+            amount: "{{ amount }}",
+            currency: "INR",
+            order_id: "{{ razorpay_order_id }}",
+            name: "Satyam Mishra",
+            description: "Purchase Description",
+            image: "https://your-logo-url",
+            handler: function(response) {
+                document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+                document.getElementById('razorpay_signature').value = response.razorpay_signature;
+                document.getElementById('paymentForm').submit();
+            },
+            prefill: {
+                name: "{{ request.user.username }}",
+                email: "{{ request.user.email }}"
+            },
+            theme: {
+                color: "#F37254"
+            }
+        };
+        const rzp = new Razorpay(options);
+        rzp.open();
+    });
+</script>
+
+
+
+
+
+
+{% endblock %}  
+
+
+
