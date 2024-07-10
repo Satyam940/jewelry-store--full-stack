@@ -1,0 +1,123 @@
+{% extends "layout.html" %}
+
+{% block content %}
+{% comment %} 
+<p>test</p>
+<h1>Order History</h1>
+<h1>Order History</h1>
+{% if orders %}
+    {% for order in orders %}
+        <div class="order">
+            <h2>Order #{{ order.id }}</h2>
+            <p><strong>Name:</strong> {{ order.name }}</p>
+            <p><strong>Address:</strong> {{ order.address }}</p>
+            <p><strong>Email:</strong> {{ order.email }}</p>
+            <p><strong>Phone Number:</strong> {{ order.phone_number }}</p>
+            <p><strong>City:</strong> {{ order.city }}</p>
+            <p><strong>State:</strong> {{ order.state }}</p>
+            <p><strong>Date:</strong> {{ order.created_at }}</p>
+            <p><strong>Total Amount:</strong> {{ order.total_amount }}</p>
+            <p><strong>Tax Amount:</strong> {{ order.tax_amount }}</p>
+            <p><strong>Store Pickup:</strong> {{ order.store_pickup }}</p>
+            <p><strong>Discount:</strong> {{ order.discount }}</p>
+            <p><strong>Final Amount:</strong> {{ order.final_amount }}</p>
+            <p><strong>Status:</strong> {{ order.razorpay_order_id }}</p>
+
+            <h3>Items:</h3>
+            {% if order.items.all %}
+                <ul>
+                    {% for item in order.items.all %}
+                        <li class="order-item">
+                            {% if item.content_object.image %}
+                                <img src="{{ item.content_object.image.url }}" alt="{{ item.content_object.name }}">
+                            {% else %}
+                                <img src="https://via.placeholder.com/100" alt="Placeholder Image">
+                            {% endif %}
+                            <div class="item-details">
+                                <strong>{{ item.content_object.name }}</strong><br>
+                                <span class="quantity">Quantity: {{ item.quantity }}</span><br>
+                                <span class="price">Price: {{ item.price }}</span><br>
+                            </div>
+                        </li>
+                    {% empty %}
+                        <li class="no-items">No items found for this order.</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="no-items">No items found for this order.</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No orders found.</p>
+{% endif %} {% endcomment %}
+
+<section class="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
+    <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+      <div class="mx-auto max-w-5xl">
+        <div class="gap-4 sm:flex sm:items-center sm:justify-between">
+          <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">My orders</h2>
+        </div>
+        {% if orders %}
+  
+        <div class="mt-6 flow-root sm:mt-8">
+          <div class="divide-y divide-gray-200 dark:divide-gray-700">
+            {% for order in orders %}
+            <div class="flex flex-wrap items-center gap-y-4 py-6">
+              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
+                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Order ID:</dt>
+                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
+                  <a href="#" class="hover:underline">#{{ order.id }}</a>
+                </dd>
+              </dl>
+  
+              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
+                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Date:</dt>
+                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">{{ order.created_at }}</dd>
+              </dl>
+  
+              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
+                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Price:</dt>
+                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">₹{{ order.final_amount }}</dd>
+              </dl>
+  
+              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
+                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Status:</dt>
+                {% if order.status == 'Cancelled' %}
+                <dd class="me-2 mt-1.5 inline-flex items-center rounded bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800 dark:bg-red-900 dark:text-red-300">
+                    <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
+                    </svg>
+                    {{order.status}}
+                  </dd>
+              
+              {% else %}
+              <dd class="me-2 mt-1.5 inline-flex items-center rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">
+                <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
+                </svg>
+                {{order.status}}
+              </dd>
+
+              {% endif %}
+            </dl>
+  
+              <div class="w-full grid sm:grid-cols-2 lg:flex lg:w-64 lg:items-center lg:justify-end gap-4">
+                <form action="{% url 'cancel_order' order.id %}" method="post">
+                  {% csrf_token %}
+                  <button type="submit" class="w-full rounded-lg border border-red-700 px-3 py-2 text-center text-sm font-medium text-red-700 hover:bg-red-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-red-300 dark:border-red-500 dark:text-red-500 dark:hover:bg-red-600 dark:hover:text-white dark:focus:ring-red-900 lg:w-auto">Cancel order</button>
+                </form>
+                <a href="#" class="w-full inline-flex justify-center rounded-lg  border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 lg:w-auto">View details</a>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+
+
+{% endblock %}

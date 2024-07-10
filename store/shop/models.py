@@ -126,6 +126,8 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     city = models.CharField(max_length=100, default='null')
     state = models.CharField(max_length=100, default='null')
+    name = models.CharField(max_length=200)
+    status= models.CharField(max_length=100, default='Confirmed')
 
     def __str__(self):
         return f"Order #{self.id}"

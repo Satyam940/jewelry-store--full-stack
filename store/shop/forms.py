@@ -34,5 +34,5 @@ class Necklace_Review(forms.ModelForm):
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['address' , 'email', 'phone_number', 'city', 'state']
+        fields = ['name','address' , 'email', 'phone_number', 'city', 'state']
 
