@@ -257,7 +257,7 @@ def create_razorpay_order(request):
 
             client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
             razorpay_order = client.order.create({
-                'amount': int(order.final_amount * 100),  # Amount in paise
+                'amount': int(order.final_amount * 100),  
                 'currency': 'INR',
                 'payment_capture': '1'
             })
@@ -291,7 +291,6 @@ def create_razorpay_order(request):
 
 @csrf_exempt
 def payment_success(request):
-    orders = Order.objects.filter(user=request.user).prefetch_related('items__content_object')
     if request.method == 'POST':
         client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
         
@@ -305,6 +304,7 @@ def payment_success(request):
             client.utility.verify_payment_signature(params_dict)
             payment = client.payment.fetch(params_dict['razorpay_payment_id'])
             CartItem.objects.filter(user=request.user).delete()
+            order = get_object_or_404(Order , razorpay_order_id=params_dict['razorpay_order_id'])
 
             return render(request, 'payment/payment_success.html', {
                 'payment_id': payment['id'],
@@ -315,7 +315,8 @@ def payment_success(request):
                 'method': payment['method'],
                 'email': payment['email'], 
                 'contact': payment['contact'],
-                'orders':orders
+                'order':order
+               
             })
         except razorpay.errors.SignatureVerificationError:
             return render(request, 'payment/payment_failure.html')
@@ -338,6 +339,17 @@ def cancel_order(request, order_id):
     order.save()
     return redirect('order_History')
 
+@login_required
+def order_detail(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    order_items = OrderItem.objects.filter(order=order)
+    # order_count = Order.count()
+    
+    return render(request, 'order/order_detail.html', {
+        'order': order,
+        'order_items': order_items,
+        # 'order_count':order_count
+    })
 
 # @login_required
 # def create_order(request):
