@@ -65,11 +65,20 @@ class Bangles(models.Model):
     description= models.TextField(max_length=10000)
     stock = models.IntegerField(default=10)
     like_count = models.PositiveIntegerField(default=0)
-
+    liked_by = models.ManyToManyField(User, related_name='liked_bangles')
 
     
     def __str__(self):
         return self.name
+    
+    def increment_likes(self):
+        self.like_count += 1
+        self.save()
+
+    def decrement_likes(self):
+        if self.like_count > 0:
+            self.like_count -= 1
+            self.save()
     
 
 
@@ -106,6 +115,18 @@ class Review_Necklace(models.Model):
 
     def __str__(self):
         return f'Reviews by {self.user.username}'
+    
+
+class Review_bangle(models.Model):
+    product = models.ForeignKey('Bangles', on_delete=models.CASCADE, related_name='bangle_reviews')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    rating = models.IntegerField()
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Reviews by {self.user.username}'
+
 
     
 

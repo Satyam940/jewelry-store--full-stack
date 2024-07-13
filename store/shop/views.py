@@ -3,13 +3,11 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth import login , authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
-from .models import ring,Necklace,CartItem,Review_Ring, Review_Necklace,Order,OrderItem
-from .forms import SignUpForm,Ring_Review,Necklace_Review,OrderForm
-from django.urls import reverse
+from .models import ring,Necklace,CartItem,Review_Ring, Review_Necklace,Order,OrderItem, Bangles, Review_bangle
+from .forms import SignUpForm,Ring_Review,Necklace_Review,OrderForm,Bangle_Review
 from django.contrib.auth.forms import AuthenticationForm
 from django.conf import settings
 import razorpay
-from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from decimal import Decimal
@@ -134,6 +132,63 @@ def necklace_like(request , necklace_id):
     return redirect('necklace_details' , necklace_id = necklace_id)
 
 
+def bangles_list(request):
+    bangles = Bangles.objects.all()
+    return render(request , 'bangles/bangles.html',{'bangles': bangles})
+
+def bangle_like(request , bangle_id):
+    bangle_like = get_object_or_404(Bangles , id=bangle_id)
+    if request.user in bangle_like.liked_by.all():
+        bangle_like.liked_by.remove(request.user)
+        bangle_like.decrement_likes()
+        return redirect('bangle_detail', bangle_id=bangle_id)   
+    
+    bangle_like.increment_likes()
+    bangle_like.liked_by.add(request.user)
+
+    return redirect('bangle_detail', bangle_id = bangle_id)
+
+
+def bangle_detail(request, bangle_id):
+    bangle = get_object_or_404(Bangles, id=bangle_id)
+   
+    reviews = Review_bangle.objects.filter(product=bangle).order_by('-created_at')
+    review_count = reviews.count()
+
+    return render(request, 'bangles/item-info.html', {
+        'bangle': bangle,
+        'reviews': reviews,
+        'review_count': review_count
+    })
+
+
+
+@login_required
+def bangle_review(request, bangle_id):
+    bangle_obj = get_object_or_404(Bangles, id=bangle_id)
+
+    if request.method == 'POST':
+        review_form = Bangle_Review(request.POST)
+        if review_form.is_valid():
+            review = review_form.save(commit=False)
+            review.product = bangle_obj
+            review.user = request.user
+            review.save()
+            return redirect('bangle_detail', bangle_id=bangle_id)
+    else:
+        review_form = Bangle_Review()
+
+    show_form = request.GET.get('show_from' , False)
+
+    return render(request, 'bangles/item-info.html', {
+        'bangle': bangle_obj,
+        'review_form': review_form,
+        'show_form':show_form,
+    })
+
+
+
+
 @login_required
 def add_to_cart(request, item_id, model_name):
     content_type = ContentType.objects.get(model=model_name.lower())
@@ -216,7 +271,10 @@ def login_view(request):
     return render(request, 'registration/login.html', {'form': form, 'error_message': error_message})
 
 
-
+def logout(request):
+    current_page = request.GET.get('next','/')
+    logout(request)
+    return(request, current_page)
 
             
     

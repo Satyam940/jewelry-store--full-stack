@@ -19,6 +19,14 @@ urlpatterns = [
     path('necklace/<int:necklace_id>/review/', views.necklace_review, name='necklace_review'),
 
 
+    path('bangles/', views.bangles_list, name='bangles_list'),
+    path('bangle/<int:bangle_id>/', views.bangle_detail, name='bangle_detail'),
+    path('bangle/<int:bangle_id>/review/', views.bangle_review, name='bangle_review'),
+    path('bangle/<int:bangle_id>/like/', views.bangle_like, name='bangle_like'),
+
+
+
+
   
 
     path('add_to_cart/<int:item_id>/<str:model_name>/', views.add_to_cart, name='add_to_cart'),
@@ -29,6 +37,7 @@ urlpatterns = [
 
     path('signup/', views.signup, name='signup'),
     path('login/', views.login_view, name='login_view'),
+    path('logout/', views.logout, name='logout'),
 
 
 

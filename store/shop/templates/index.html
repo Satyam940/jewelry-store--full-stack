@@ -89,16 +89,36 @@
   
 
 
-
-
-
-{% endblock %}
-{% block video %}
-
 <div class="video " style="padding: 0px 142px 0px 113px; ">
     <video  class="h-full w-full rounded-lg" controls muted loop autoPlay>
         <source src="{% static "JEWELLERY.mp4" %}" type="video/mp4" />
     </video>
 </div>
 
+
+
+
+<div class="flex justify-center items-center min-h-screen my-6 ">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-screen-lg mx-auto">
+        <a href="#" class="block bg-white border border-gray-200 rounded-3xl shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 overflow-hidden">
+            <img class="w-full h-auto rounded-lg object-cover" src="https://kisna.com/cdn/shop/files/Grid_banner_1_af744536-d940-45e7-86f3-385937470a29_1024x.jpg?v=1719837693" alt="Image 1">
+        </a>
+        <a href="#" class="block bg-white border border-gray-200 rounded-3xl shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 overflow-hidden">
+            <img class="w-full h-auto rounded-lg object-cover" src="https://kisna.com/cdn/shop/files/Grid_banner_2_3bb1e345-14e3-4b37-b4e5-585a67c92a6d_1024x.jpg?v=1719837693" alt="Image 2">
+        </a>
+        <a href="#" class="block bg-white border border-gray-200 rounded-3xl shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 overflow-hidden">
+            <img class="w-full h-auto rounded-lg object-cover" src="https://kisna.com/cdn/shop/files/Grid_banner_3_7292f9b4-211b-4ff1-9d4d-b911975343ed_1024x.jpg?v=1719837693" alt="Image 3">
+        </a>
+        <a href="#" class="block bg-white border border-gray-200 rounded-3xl shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 overflow-hidden">
+            <img class="w-full h-auto rounded-lg object-cover" src="https://kisna.com/cdn/shop/files/Grid_banner_4_0e529f4d-d497-48fd-ae8a-40e886486e6f_1024x.jpg?v=1719837693" alt="Image 4">
+        </a>
+    </div>
+</div>
+
+
+
+
+
+
 {% endblock %}
+
