@@ -33,7 +33,7 @@ RAZORPAY_KEY_SECRET='WWbR7wRthiHjFDFyfg6ETUcH'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['joyful-jewels.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
