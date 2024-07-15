@@ -15,7 +15,7 @@ import os
 # settings.py
 
 import django_heroku
-django_heroku.settings(locals())
+# django_heroku.settings(locals())
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -33,7 +33,7 @@ RAZORPAY_KEY_SECRET='WWbR7wRthiHjFDFyfg6ETUcH'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition

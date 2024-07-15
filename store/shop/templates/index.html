@@ -58,33 +58,36 @@
 
 <h3 class=" font-medium font-serif text-center" style="font-size: xx-large;">SHOP BY CATEGORY</h3>
 
-<div class="items flex gap-6 ml-40 mt-10 mb-10">
-
-<div class="relative max-w-xs overflow-hidden bg-cover bg-no-repeat rounded-t-full rounded-b-full h-60">
-    <a href="{% url "necklace_list" %}">
-    <img
-      src="{% static "pendant.jpg" %}"
-      class="max-w-xs transition duration-300 ease-in-out hover:scale-110 "
-      /></a>
+<div class="items grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-6 mx-4 mt-10 mb-10 justify-center">
+    <div class="flex justify-center">
+        <div class="relative max-w-xs overflow-hidden bg-cover bg-no-repeat rounded-t-full rounded-b-full shadow-lg">
+            <a href="{% url 'necklace_list' %}">
+                <img src="{% static '4.jpg' %}"
+                    class="w-full h-60 object-cover transition duration-300 ease-in-out transform hover:scale-110"
+                    alt="Pendant">
+            </a>
+        </div>
+    </div>
+    <div class="flex justify-center">
+        <div class="relative max-w-xs overflow-hidden bg-cover bg-no-repeat rounded-t-full rounded-b-full shadow-lg">
+            <a href="{% url 'bangles_list' %}">
+                <img src="https://img.freepik.com/premium-photo/gold-rings-with-diamonds-black-background_579873-3016.jpg"
+                    class="w-full h-60 object-cover transition duration-300 ease-in-out transform hover:scale-110"
+                    alt="Gold Rings">
+            </a>
+        </div>
+    </div>
+    <div class="flex justify-center">
+        <div class="relative max-w-xs overflow-hidden bg-cover bg-no-repeat rounded-t-full rounded-b-full shadow-lg">
+            <a href="{% url 'ring_list' %}">
+                <img src="https://img.pikbest.com/wp/202405/amber-3d-rendering-of-an-isolated-black-background-gold-diamond-ring_9827298.jpg!sw800"
+                    class="w-full h-60 object-cover transition duration-300 ease-in-out transform hover:scale-110"
+                    alt="Diamond Ring">
+            </a>
+        </div>
+    </div>
 </div>
-<div class="relative max-w-xs overflow-hidden bg-cover bg-no-repeat rounded-t-full rounded-b-full ">
-    <a href="#">
-    <img
-      src="https://img.freepik.com/premium-photo/gold-rings-with-diamonds-black-background_579873-3016.jpg"
-      class="max-w-xs transition duration-300 ease-in-out hover:scale-110  object-cover object-center w-full h-full"/>
-    </a>
-  </div><div class="relative max-w-xs overflow-hidden bg-cover bg-no-repeat rounded-t-full rounded-b-full h-60 ">
-    <a href="{% url "ring_list" %}">
-    <img
-      src="https://img.pikbest.com/wp/202405/amber-3d-rendering-of-an-isolated-black-background-gold-diamond-ring_9827298.jpg!sw800"
-      class="max-w-xs transition duration-300 ease-in-out hover:scale-110 object-cover object-center w-full h-full"
-       /></a>
-  </div>
-
-</div>
-
-
-   
+  
 
   
 
