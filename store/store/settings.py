@@ -45,9 +45,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'store.shop',
+    'shop',
     'tailwind',
-    'store.theme',
+    'theme',
     'django_browser_reload',
 ]
 
@@ -67,7 +67,7 @@ MIDDLEWARE = [
     "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
-ROOT_URLCONF = 'store.store.urls'
+ROOT_URLCONF = 'store.urls'
 
 TEMPLATES = [
     {
