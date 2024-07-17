@@ -14,8 +14,6 @@ from pathlib import Path
 import os
 # settings.py
 
-import django_heroku
-# django_heroku.settings(locals())
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-x+tv7a#y&2km*x!1i^d@c6fko7*naq%-a6i)pt$!d8h&@55dpg'
+SECRET_KEY = 'django-insecure-x+tv7a#y&2km*x!1i^d@c6fko7*naq%-a6i)pt$!d 8h&@55dpg'
 
 RAZORPAY_KEY_ID='rzp_test_i56vmoZfmePp75'
 RAZORPAY_KEY_SECRET='WWbR7wRthiHjFDFyfg6ETUcH'
