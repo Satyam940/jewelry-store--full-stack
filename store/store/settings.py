@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'shop',
     # 'tailwind',
-    # 'theme',
+    'theme',
     # 'django_browser_reload',
 ]
 
@@ -61,7 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "django_browser_reload.middleware.BrowserReloadMiddleware",
+    # "django_browser_reload.middleware.BrowserReloadMiddleware",
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
