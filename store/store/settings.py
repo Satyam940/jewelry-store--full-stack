@@ -31,7 +31,7 @@ RAZORPAY_KEY_SECRET='WWbR7wRthiHjFDFyfg6ETUcH'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['jewelry-store-837q.onrender.com']
+ALLOWED_HOSTS = ['jewelry-store-837q.onrender.com','https://joyful-jewels.onrender.com/']
 
 
 # Application definition
