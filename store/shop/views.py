@@ -24,7 +24,7 @@ def ring_list(request):
  
 
 @login_required
-@cache_page(60 * 15)
+
 def ring_review(request, ring_id):
     ring_instance = get_object_or_404(ring, id=ring_id)
 
@@ -63,7 +63,7 @@ def ring_detail(request, ring_id):
 
 
 @login_required
-@cache_page(60 * 15)
+
 def ring_like(request, ring_id):
     ring_instance = get_object_or_404(ring, id=ring_id)
 
@@ -81,7 +81,7 @@ def ring_like(request, ring_id):
 
 
 @login_required
-@cache_page(60 * 15)
+
 def necklace_review(request, necklace_id):
     necklace_obj = get_object_or_404(Necklace, id=necklace_id)
 
@@ -123,7 +123,6 @@ def necklace_details(request , necklace_id):
         })
 
 @login_required
-@cache_page(60 * 15)
 def necklace_like(request , necklace_id):
     necklace_instance = get_object_or_404(Necklace , id = necklace_id)
     if request.user in necklace_instance.liked_by.all():
@@ -142,7 +141,7 @@ def bangles_list(request):
     bangles = Bangles.objects.all()
     return render(request , 'bangles/bangles.html',{'bangles': bangles})
 
-@cache_page(60 * 15)
+
 def bangle_like(request , bangle_id):
     bangle_like = get_object_or_404(Bangles , id=bangle_id)
     if request.user in bangle_like.liked_by.all():
@@ -199,7 +198,7 @@ def bangle_review(request, bangle_id):
 
 
 @login_required
-@cache_page(60 * 15)
+
 def add_to_cart(request, item_id, model_name):
     content_type = ContentType.objects.get(model=model_name.lower())
     item = get_object_or_404(content_type.model_class(), id=item_id)
@@ -212,7 +211,7 @@ def add_to_cart(request, item_id, model_name):
     return redirect('cart_detail')
 
 @login_required
-@cache_page(60 * 15)
+
 def remove_from_cart(request, item_id, model_name):
     content_type = ContentType.objects.get(model=model_name)
     cart_item = get_object_or_404(CartItem, user=request.user, content_type=content_type, object_id=item_id)
@@ -291,7 +290,7 @@ def logout(request):
             
     
 @login_required
-@cache_page(60 * 15)
+
 def create_razorpay_order(request):
     cart_items = CartItem.objects.filter(user=request.user)
 
@@ -361,7 +360,7 @@ def create_razorpay_order(request):
 
 
 @csrf_exempt
-@cache_page(60 * 15)
+
 def payment_success(request):
     if request.method == 'POST':
         client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
@@ -406,7 +405,7 @@ def order_History(request):
     
     
 @login_required
-@cache_page(60 * 15)
+
 def cancel_order(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     order.status = 'Cancelled'
