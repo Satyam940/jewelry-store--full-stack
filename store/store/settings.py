@@ -94,6 +94,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        'CONN_MAX_AGE': 60,
     }
 }
 
@@ -159,4 +160,10 @@ LOGIN_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/shop/'
 LOGOUT_REDIRECT_URL = '/shop/'
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}
 
