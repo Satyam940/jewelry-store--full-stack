@@ -65,7 +65,7 @@ MIDDLEWARE = [
     "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
-ROOT_URLCONF = 'store.urls'
+ROOT_URLCONF = 'store.store.urls'
 
 TEMPLATES = [
     {
