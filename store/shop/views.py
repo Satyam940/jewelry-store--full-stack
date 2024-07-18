@@ -284,7 +284,7 @@ def login_view(request):
 def logout(request):
     # current_page = request.GET.get('next','/')
     logout(request)
-    return redirect(request , 'index')
+    return redirect('index')
 
             
     
