@@ -46,7 +46,7 @@ def ring_review(request, ring_id):
         'show_form':show_form,
     })
 
-@cache_page(60 * 15)
+
 def ring_detail(request, ring_id):
     ring_instance = get_object_or_404(ring, id=ring_id)
     reviews = Review_Ring.objects.filter(product=ring_instance).order_by('-create_at')
@@ -110,7 +110,7 @@ def necklace_list(request):
     necklace = Necklace.objects.all()
     return render(request,'necklace/necklace.html',{'necklace':necklace})
 
-@cache_page(60 * 15)
+
 def necklace_details(request , necklace_id):
     necklace = get_object_or_404(Necklace , id=necklace_id)
     reviews = Review_Necklace.objects.filter(product=necklace).order_by('-created_at')
@@ -155,7 +155,7 @@ def bangle_like(request , bangle_id):
     return redirect('bangle_detail', bangle_id = bangle_id)
 
 
-@cache_page(60 * 15)
+
 def bangle_detail(request, bangle_id):
     bangle = get_object_or_404(Bangles, id=bangle_id)
    
@@ -171,7 +171,7 @@ def bangle_detail(request, bangle_id):
 
 
 @login_required
-@cache_page(60 * 15)
+
 def bangle_review(request, bangle_id):
     bangle_obj = get_object_or_404(Bangles, id=bangle_id)
 
@@ -211,7 +211,6 @@ def add_to_cart(request, item_id, model_name):
     return redirect('cart_detail')
 
 @login_required
-
 def remove_from_cart(request, item_id, model_name):
     content_type = ContentType.objects.get(model=model_name)
     cart_item = get_object_or_404(CartItem, user=request.user, content_type=content_type, object_id=item_id)
@@ -243,7 +242,7 @@ def cart_detail(request):
 
 
 
-@cache_page(60 * 15)
+
 def signup(request):
     if request.method=='POST':
         form= SignUpForm(request.POST)
@@ -259,7 +258,7 @@ def signup(request):
     return render( request , 'registration/register.html', {'form':form})
 
 
-@cache_page(60 * 15)
+
 def login_view(request):
     error_message = None
 
@@ -281,11 +280,11 @@ def login_view(request):
 
     return render(request, 'registration/login.html', {'form': form, 'error_message': error_message})
 
-@cache_page(60 * 15)
+
 def logout(request):
-    current_page = request.GET.get('next','/')
+    # current_page = request.GET.get('next','/')
     logout(request)
-    return(request, current_page)
+    return redirect(request , 'index')
 
             
     
@@ -396,7 +395,7 @@ def payment_success(request):
 
 
 @login_required
-@cache_page(60 * 15)
+
 def order_History(request):
     orders = Order.objects.filter(user=request.user).prefetch_related('items__content_object')
     return render(request, 'order/order.html', {
@@ -413,7 +412,7 @@ def cancel_order(request, order_id):
     return redirect('order_History')
 
 @login_required
-@cache_page(60 * 15)
+
 def order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     order_items = OrderItem.objects.filter(order=order)
