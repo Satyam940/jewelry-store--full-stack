@@ -218,7 +218,7 @@ def remove_from_cart(request, item_id, model_name):
     return redirect('cart_detail')
 
 @login_required
-@cache_page(60 * 15)
+
 def cart_detail(request):
     cart_items = CartItem.objects.filter(user=request.user)
     total_amount = sum(item.content_object.price * item.quantity for item in cart_items)
