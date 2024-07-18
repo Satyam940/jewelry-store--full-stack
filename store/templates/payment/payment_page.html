@@ -6,7 +6,8 @@
 
 
 <!-- payment_page.html -->
-<h1>Payment Gatway is runing in test mode so feel free to pay your money will not deducted use any random number to pay  </h1>
+<h1>Note </h1>
+<h2>Payment Gatway is runing in test mode ,So feel free to pay. Your money will not deducted use any random number to pay  </h2>
 <form id="paymentForm" method="POST" action="{% url 'payment_success' %}">
     {% csrf_token %}
     <input type="hidden" name="razorpay_order_id" id="razorpay_order_id" value="{{ razorpay_order_id }}">
