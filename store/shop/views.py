@@ -251,7 +251,6 @@ def signup(request):
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password1'])
             form.save()
-            login(request , user)
             return redirect('login_view')
     else:
         form = SignUpForm()
