@@ -13,11 +13,11 @@ from django.http import JsonResponse
 from decimal import Decimal
 from django.views.decorators.cache import cache_page
 
-@cache_page(60 * 15)
+
 def index(request):
     return render(request , 'index.html')
 
-@cache_page(60 * 15)
+
 def ring_list(request):
     rings = ring.objects.all()
     return render(request , 'ring/ring.html',{'rings':rings})
@@ -105,7 +105,7 @@ def necklace_review(request, necklace_id):
     })
 
 
-@cache_page(60 * 15)
+
 def necklace_list(request):
     necklace = Necklace.objects.all()
     return render(request,'necklace/necklace.html',{'necklace':necklace})
