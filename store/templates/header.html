@@ -1,163 +1,144 @@
+{% load static %}
 
-{% load static %} 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<nav class="max-w-screen-xl px-4 mx-auto 2xl:px-0 py-4">
-  <div class="flex items-center justify-between">
-      <div class="flex items-center space-x-8">
-          <div class="shrink-0">
+</head>
+<body>
+    <nav class="max-w-screen-xl px-4 mx-auto 2xl:px-0 py-4 relative z-50">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-8">
+            <div class="shrink-0">
               <a href="{% url 'index' %}" title="">
-                  <img class="block w-auto h-8 dark:hidden" src="{% static 'TanishqLogo.png' %}" alt="Logo">
+                <img class="block w-auto h-8 dark:hidden" src="{% static 'TanishqLogo.png' %}" alt="Logo">
               </a>
-          </div>
-
-          <ul class="hidden lg:flex items-center justify-start gap-6 md:gap-8 py-3 sm:justify-center">
-            <li>
-                <a href="{% url "index" %}" title="" class="flex text-sm font-medium text-gray-900 hover:text-primary-700">
-                    Home
+            </div>
+      
+            <ul class="hidden lg:flex items-center justify-start gap-6 md:gap-8 py-3 sm:justify-center">
+              <li>
+                <a href="{% url 'index' %}" title="" class="flex text-sm font-medium text-gray-900 hover:text-primary-700">
+                  Home
                 </a>
-            </li>
-            <li class="shrink-0">
+              </li>
+              <li class="shrink-0">
                 <a href="#" title="" class="flex text-sm font-medium text-gray-900 hover:text-primary-700">
-                    Best Sellers
+                  Best Sellers
                 </a>
-            </li>
-            <li class="shrink-0">
-                <a href="{% url "ring_list" %}" title="" class="flex text-sm font-medium text-gray-900 hover:text-primary-700">
-                    Rings
+              </li>
+              <li class="shrink-0">
+                <a href="{% url 'ring_list' %}" title="" class="flex text-sm font-medium text-gray-900 hover:text-primary-700">
+                  Rings
                 </a>
-            </li>
-            <li class="shrink-0">
-                <a href="{% url "necklace_list" %}" title="" class="text-sm font-medium text-gray-900 hover:text-primary-700 ">
-                    Necklace
+              </li>
+              <li class="shrink-0">
+                <a href="{% url 'necklace_list' %}" title="" class="text-sm font-medium text-gray-900 hover:text-primary-700">
+                  Necklace
                 </a>
-            </li>
-            <li class="shrink-0">
-                <a href="{% url "bangles_list" %}" title="" class="text-sm font-medium text-gray-900 hover:text-primary-700">
-                    Bangles
+              </li>
+              <li class="shrink-0">
+                <a href="{% url 'bangles_list' %}" title="" class="text-sm font-medium text-gray-900 hover:text-primary-700">
+                  Bangles
                 </a>
-            </li>
-        </ul>
-        {% comment %} dark:text-white dark:hover:text-primary-500 {% endcomment %}
-        <!-- Mobile Menu Button -->
+              </li>
+            </ul>
+      
 
-        
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="lg:hidden hidden absolute top-16 right-0 mt-2 w-56 origin-top-right bg-white divide-y divide-gray-100 rounded-lg shadow-lg dark:bg-gray-700 dark:divide-gray-600">
-            <ul class="py-1">
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="lg:hidden hidden absolute top-16 right-0 mt-2 w-56 origin-top-right bg-white divide-y divide-gray-100 rounded-lg shadow-lg dark:bg-gray-700 dark:divide-gray-600 z-50">
+              <ul class="py-1">
                 <li><a href="#" class="block px-4 py-2 text-sm text-gray-900 dark:hover:bg-gray-600">Home</a></li>
                 <li><a href="#" class="block px-4 py-2 text-sm text-gray-900 dark:hover:bg-gray-600">Best Sellers</a></li>
                 <li><a href="#" class="block px-4 py-2 text-sm text-gray-900 dark:hover:bg-gray-600">Gift Ideas</a></li>
                 <li><a href="#" class="block px-4 py-2 text-sm text-gray-900 dark:hover:bg-gray-600">Today's Deals</a></li>
                 <li><a href="#" class="block px-4 py-2 text-sm text-gray-900 dark:hover:bg-gray-600">Sell</a></li>
-            </ul>
-        </div>
-      </div>
-
-      <div class="flex items-center lg:space-x-2">
-          <a href="{% url 'cart_detail' %}">
+              </ul>
+            </div>
+          </div>
+      
+          <div class="flex items-center lg:space-x-2">
+            <a href="{% url 'cart_detail' %}">
               <button id="myCartDropdownButton1" type="button"
-                  class="inline-flex items-center rounded-lg justify-center p-2 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
-                  <span class="sr-only">
-                      Cart
-                  </span>
-                  <svg class="w-5 h-5 lg:me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                      height="24" fill="none" viewBox="0 0 24 24">
-                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
-                  </svg>
-                  <span class="hidden sm:flex">My Cart</span>
+                class="inline-flex items-center rounded-lg justify-center p-2 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
+                <span class="sr-only">Cart</span>
+                <svg class="w-5 h-5 lg:me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                  height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
+                </svg>
+                <span class="hidden sm:flex">My Cart</span>
               </button>
-          </a>
-
-          <div class="relative inline-block text-left">
+            </a>
+      
+            <div class="relative inline-block text-left z-50">
               {% if user.is_authenticated %}
               <button id="userDropdownButton1" type="button"
-                  class="inline-flex items-center rounded-lg justify-center p-2 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900">
-                  <svg class="w-5 h-5 me-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                      stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                  </svg>
-                  {{user.username}}
-                  <svg class="w-4 h-4 text-gray-900ms-1" xmlns="http://www.w3.org/2000/svg"
-                      fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="m19 9-7 7-7-7" />
-                  </svg>
-              </button>
-              {% else %}
-            <button id="userDropdownButton1" type="button"
                 class="inline-flex items-center rounded-lg justify-center p-2 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900">
                 <svg class="w-5 h-5 me-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                 </svg>
-                    Account
+                {{user.username}}
                 <svg class="w-4 h-4 text-gray-900 ms-1" xmlns="http://www.w3.org/2000/svg"
-                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="m19 9-7 7-7-7" />
+                  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="m19 9-7 7-7-7" />
                 </svg>
-            </button>
-
-          {% endif %}
-
-
+              </button>
+              {% else %}
+              <button id="userDropdownButton1" type="button"
+                class="inline-flex items-center rounded-lg justify-center p-2 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900">
+                <svg class="w-5 h-5 me-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                </svg>
+                Account
+                <svg class="w-4 h-4 text-gray-900 ms-1" xmlns="http://www.w3.org/2000/svg"
+                  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="m19 9-7 7-7-7" />
+                </svg>
+              </button>
+              {% endif %}
+      
               <div id="userDropdown1"
-                  class="hidden absolute right-0 mt-2 w-56 origin-top-right bg-white divide-y divide-gray-100 rounded-lg shadow-lg dark:bg-gray-700 dark:divide-gray-600">
-                  <ul class="py-1">
-                      <li><a href="#"
-                              class="block px-4 py-2 text-sm text-gray-900  dark:hover:bg-gray-600">My
-                              Account</a></li>
-                      <li><a href="{% url "order_History" %}"
-                              class="block px-4 py-2 text-sm text-gray-900  dark:hover:bg-gray-600">My
-                              Orders</a></li>
-
-                  </ul>
-                  <div class="py-1">
-                    {% if user.is_authenticated %}
-                        <a href="{% url 'logout' %}"
-                           class="block px-4 py-2 text-sm font-medium text-gray-900 dark:hover:bg-gray-600">
-                           Sign Out
-                        </a>
-                    {% else %}
-                        <a href="{% url 'login_view' %}"
-                           class="block px-4 py-2 text-sm font-medium text-gray-900 dark:hover:bg-gray-600">
-                           Sign In
-                        </a>
-                    {% endif %}
+                class="hidden absolute right-0 mt-2 w-56 origin-top-right bg-white divide-y divide-gray-100 rounded-lg shadow-lg dark:bg-gray-700 dark:divide-gray-600 z-50">
+                <ul class="py-1">
+                  <li><a href="#" class="block px-4 py-2 text-sm text-gray-900 dark:hover:bg-gray-600">My
+                      Account</a></li>
+                  <li><a href="{% url 'order_History' %}" class="block px-4 py-2 text-sm text-gray-900 dark:hover:bg-gray-600">My
+                      Orders</a></li>
+                </ul>
+                <div class="py-1">
+                  {% if user.is_authenticated %}
+                  <a href="{% url 'logout' %}" class="block px-4 py-2 text-sm font-medium text-gray-900 dark:hover:bg-gray-600">
+                    Sign Out
+                  </a>
+                  {% else %}
+                  <a href="{% url 'login_view' %}" class="block px-4 py-2 text-sm font-medium text-gray-900 dark:hover:bg-gray-600">
+                    Sign In
+                  </a>
+                  {% endif %}
                 </div>
                 
               </div>
-
-          </div>
-
-          <button type="button" data-collapse-toggle="ecommerce-navbar-menu-1" aria-controls="ecommerce-navbar-menu-1"
-              aria-expanded="false"
-              class="inline-flex lg:hidden items-center justify-center rounded-md dark:hover:bg-gray-700 p-2 text-gray-900 dark:text-white">
-              <span class="sr-only">
-                  Open Menu
-              </span>
-              <button type="button" data-collapse-toggle="mobile-menu" aria-controls="mobile-menu" aria-expanded="false" class="inline-flex lg:hidden items-center justify-center hover:bg-gray-100 rounded-md dark:hover:bg-gray-700 p-2 text-gray-900 dark:text-white">
-                <span class="sr-only">Open Menu</span>
-                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              
+                <!-- Mobile Menu Button -->
+                 <button type="button" data-collapse-toggle="mobile-menu" aria-controls="mobile-menu" aria-expanded="false" class="inline-flex lg:hidden items-center justify-center hover:bg-gray-100 rounded-md dark:hover:bg-gray-700 p-2 text-gray-900 dark:text-white">
+                    <span class="sr-only">Open Menu</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h14"/>
-                </svg>
-            </button>
-          </button>
-      </div>
-  </div>
-
-
-</nav>
-
-
-
-
-    
-    
-
-
-
-
+                    </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+      
+</body>
+</html>
