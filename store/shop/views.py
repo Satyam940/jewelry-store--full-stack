@@ -136,12 +136,12 @@ def necklace_like(request , necklace_id):
 
     return redirect('necklace_details' , necklace_id = necklace_id)
 
-@cache_page(60 * 15)
+
 def bangles_list(request):
     bangles = Bangles.objects.all()
     return render(request , 'bangles/bangles.html',{'bangles': bangles})
 
-
+@login_required
 def bangle_like(request , bangle_id):
     bangle_like = get_object_or_404(Bangles , id=bangle_id)
     if request.user in bangle_like.liked_by.all():
