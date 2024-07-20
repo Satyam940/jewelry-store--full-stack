@@ -12,8 +12,21 @@ class Command(BaseCommand):
             self.stdout.write("Migrations complete")
 
             fixture_file = 'store/data.json'
-            with open(fixture_file, 'r') as f:
-                data = json.load(f)
+            
+            # Try different encodings
+            encodings = ['utf-8', 'utf-16', 'iso-8859-1', 'windows-1252']
+            
+            for encoding in encodings:
+                try:
+                    with open(fixture_file, 'r', encoding=encoding) as f:
+                        data = json.load(f)
+                    self.stdout.write(f"Successfully read file with {encoding} encoding")
+                    break
+                except UnicodeDecodeError:
+                    continue
+            else:
+                raise ValueError("Unable to decode the file with any of the attempted encodings")
+
             self.stdout.write(f"Found {len(data)} objects in {fixture_file}")
 
             for item in data:
