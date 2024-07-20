@@ -1,7 +1,14 @@
 from django.urls import path
+from django.http import HttpResponse
 from . import views
+from django.core import management
 
+
+def load_data(request):
+    management.call_command('load_initial_data')
+    return HttpResponse("Data loaded successfully")
 urlpatterns = [
+    path('load-data/', load_data, name='load_data'),
     path('', views.index, name='index'),
 
 

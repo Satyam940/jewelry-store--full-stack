@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import dj_database_url
 import os
 # settings.py
 
@@ -66,12 +67,12 @@ MIDDLEWARE = [
     'django.middleware.gzip.GZipMiddleware',
 ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-ROOT_URLCONF = 'store.store.urls'
+ROOT_URLCONF = 'store.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['store/templates'],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -91,14 +92,20 @@ WSGI_APPLICATION = 'store.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-        'CONN_MAX_AGE': 60,
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#         'CONN_MAX_AGE': 60,
+#     }
+# }
 
+
+DATABASE_URL = os.getenv('DATABASE_URL', 'sqlite:///db.sqlite3')
+
+DATABASES = {
+    'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600)
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
