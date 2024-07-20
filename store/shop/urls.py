@@ -19,7 +19,7 @@ def load_production_data(request):
 
 urlpatterns = [
 
-    path('load-production-data/', load_production_data, name='load_production_data'),
+    # path('load-production-data/', load_production_data, name='load_production_data'),
     
 
     path('', views.index, name='index'),
