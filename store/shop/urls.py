@@ -1,25 +1,25 @@
 from django.urls import path
 from . import views
-import traceback
-from django.http import HttpResponse
-import sys
-from django.core import management
-import io
+# import traceback
+# from django.http import HttpResponse
+# import sys
+# from django.core import management
+# import io
 
-def load_production_data(request):
-    output = io.StringIO()
-    try:
-        management.call_command('load_production_data', stdout=output, stderr=output)
-        return HttpResponse(output.getvalue(), content_type="text/plain")
-    except Exception as e:
-        output.write(f"An error occurred: {str(e)}\n")
-        import traceback
-        output.write(traceback.format_exc())
-        return HttpResponse(output.getvalue(), content_type="text/plain", status=500)
+# def load_production_data(request):
+#     output = io.StringIO()
+#     try:
+#         management.call_command('load_production_data', stdout=output, stderr=output)
+#         return HttpResponse(output.getvalue(), content_type="text/plain")
+#     except Exception as e:
+#         output.write(f"An error occurred: {str(e)}\n")
+#         import traceback
+#         output.write(traceback.format_exc())
+#         return HttpResponse(output.getvalue(), content_type="text/plain", status=500)
 
 urlpatterns = [
 
-    path('load-production-data/', load_production_data, name='load_production_data'),
+    # path('load-production-data/', load_production_data, name='load_production_data'),
     
 
     path('', views.index, name='index'),
