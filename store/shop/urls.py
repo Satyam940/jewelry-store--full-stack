@@ -1,51 +1,9 @@
 from django.urls import path
 from . import views
-import traceback
-from django.http import HttpResponse
-import sys
-from django.core import management
-import io
-
-def load_production_data(request):
-    output = io.StringIO()
-    try:
-        management.call_command('load_production_data', stdout=output, stderr=output)
-        return HttpResponse(output.getvalue(), content_type="text/plain")
-    except Exception as e:
-        output.write(f"An error occurred: {str(e)}\n")
-        import traceback
-        output.write(traceback.format_exc())
-        return HttpResponse(output.getvalue(), content_type="text/plain", status=500)
-
-# def load_data(request):
-#     try:
-#         management.call_command('load_initial_data')
-#         return HttpResponse("Data loaded successfully")
-#     except Exception as e:
-#         error_info = sys.exc_info()
-#         error_tb = traceback.format_exception(*error_info)
-#         error_msg = f"Error: {str(e)}\n\nTraceback:\n{''.join(error_tb)}"
-#         return HttpResponse(error_msg, content_type="text/plain", status=500)
-
-# def run_migrations(request):
-#     management.call_command('migrate_and_create_superuser')
-#     return HttpResponse("Migrations applied and superuser created if needed")
-
-# def load_production_data(request):
-#     try:
-#         output = management.call_command('load_production_data', return_output=True)
-#         return HttpResponse(f"Command output: {output}")
-#     except Exception as e:
-#         error_msg = f"An error occurred: {str(e)}\n\nTraceback:\n{traceback.format_exc()}"
-#         return HttpResponse(error_msg, content_type="text/plain", status=500)
-    
-    # path('run-migrations/', run_migrations, name='run_migrations'),
-    # path('load-data/', load_data, name='load_data'),
-    # path('load-production-data/', load_production_data, name='load_production_data'),
 
 urlpatterns = [
 
-    path('load-production-data/', load_production_data, name='load_production_data'),
+    
 
     path('', views.index, name='index'),
 
@@ -94,6 +52,7 @@ urlpatterns = [
     path('order_detail/<int:order_id>/', views.order_detail, name='order_detail'),
 
 
+]
     
 
 
@@ -101,4 +60,45 @@ urlpatterns = [
 
 
 
-]
+# import traceback
+# from django.http import HttpResponse
+# import sys
+# from django.core import management
+# import io
+
+# def load_production_data(request):
+#     output = io.StringIO()
+#     try:
+#         management.call_command('load_production_data', stdout=output, stderr=output)
+#         return HttpResponse(output.getvalue(), content_type="text/plain")
+#     except Exception as e:
+#         output.write(f"An error occurred: {str(e)}\n")
+#         import traceback
+#         output.write(traceback.format_exc())
+#         return HttpResponse(output.getvalue(), content_type="text/plain", status=500)
+
+# def load_data(request):
+#     try:
+#         management.call_command('load_initial_data')
+#         return HttpResponse("Data loaded successfully")
+#     except Exception as e:
+#         error_info = sys.exc_info()
+#         error_tb = traceback.format_exception(*error_info)
+#         error_msg = f"Error: {str(e)}\n\nTraceback:\n{''.join(error_tb)}"
+#         return HttpResponse(error_msg, content_type="text/plain", status=500)
+
+# def run_migrations(request):
+#     management.call_command('migrate_and_create_superuser')
+#     return HttpResponse("Migrations applied and superuser created if needed")
+
+# def load_production_data(request):
+#     try:
+#         output = management.call_command('load_production_data', return_output=True)
+#         return HttpResponse(f"Command output: {output}")
+#     except Exception as e:
+#         error_msg = f"An error occurred: {str(e)}\n\nTraceback:\n{traceback.format_exc()}"
+#         return HttpResponse(error_msg, content_type="text/plain", status=500)
+    
+    # path('run-migrations/', run_migrations, name='run_migrations'),
+    # path('load-data/', load_data, name='load_data'),
+    # path('load-production-data/', load_production_data, name='load_production_data'),
