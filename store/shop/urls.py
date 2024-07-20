@@ -20,15 +20,22 @@ def run_migrations(request):
     return HttpResponse("Migrations applied and superuser created if needed")
 
 def load_production_data(request):
-    management.call_command('load_production_data')
-    return HttpResponse("Production data loaded successfully")
+    try:
+        output = management.call_command('load_production_data', return_output=True)
+        return HttpResponse(f"Command output: {output}")
+    except Exception as e:
+        error_msg = f"An error occurred: {str(e)}\n\nTraceback:\n{traceback.format_exc()}"
+        return HttpResponse(error_msg, content_type="text/plain", status=500)
+    
+
+
 urlpatterns = [
     path('run-migrations/', run_migrations, name='run_migrations'),
     path('load-data/', load_data, name='load_data'),
     path('load-production-data/', load_production_data, name='load_production_data'),
 
 
-    
+
     path('', views.index, name='index'),
 
 
