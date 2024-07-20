@@ -14,7 +14,14 @@ def load_data(request):
         error_tb = traceback.format_exception(*error_info)
         error_msg = f"Error: {str(e)}\n\nTraceback:\n{''.join(error_tb)}"
         return HttpResponse(error_msg, content_type="text/plain", status=500)
+
+def run_migrations(request):
+    management.call_command('migrate_and_create_superuser')
+    return HttpResponse("Migrations applied and superuser created if needed")
+
+
 urlpatterns = [
+    path('run-migrations/', run_migrations, name='run_migrations'),
     path('load-data/', load_data, name='load_data'),
     path('', views.index, name='index'),
 
