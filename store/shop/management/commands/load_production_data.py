@@ -11,7 +11,7 @@ class Command(BaseCommand):
             management.call_command('migrate')
             self.stdout.write("Migrations complete")
 
-            fixture_file = 'data.json'
+            fixture_file = 'store/data.json'
             management.call_command('loaddata', fixture_file)
             self.stdout.write(self.style.SUCCESS(f"Data loaded successfully from {fixture_file}"))
         except Exception as e:
