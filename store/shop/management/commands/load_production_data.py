@@ -11,7 +11,7 @@ class Command(BaseCommand):
             management.call_command('migrate')
             self.stdout.write("Migrations complete")
 
-            fixture_file = 'data.json'
+            fixture_file = 'store/data.json'
             with open(fixture_file, 'r') as f:
                 data = json.load(f)
             self.stdout.write(f"Found {len(data)} objects in {fixture_file}")
