@@ -19,10 +19,16 @@ def run_migrations(request):
     management.call_command('migrate_and_create_superuser')
     return HttpResponse("Migrations applied and superuser created if needed")
 
-
+def load_production_data(request):
+    management.call_command('load_production_data')
+    return HttpResponse("Production data loaded successfully")
 urlpatterns = [
     path('run-migrations/', run_migrations, name='run_migrations'),
     path('load-data/', load_data, name='load_data'),
+    path('load-production-data/', load_production_data, name='load_production_data'),
+
+
+    
     path('', views.index, name='index'),
 
 
