@@ -2,11 +2,18 @@ from django.urls import path
 from django.http import HttpResponse
 from . import views
 from django.core import management
-
+import traceback
+import sys
 
 def load_data(request):
-    management.call_command('load_initial_data')
-    return HttpResponse("Data loaded successfully")
+    try:
+        management.call_command('load_initial_data')
+        return HttpResponse("Data loaded successfully")
+    except Exception as e:
+        error_info = sys.exc_info()
+        error_tb = traceback.format_exception(*error_info)
+        error_msg = f"Error: {str(e)}\n\nTraceback:\n{''.join(error_tb)}"
+        return HttpResponse(error_msg, content_type="text/plain", status=500)
 urlpatterns = [
     path('load-data/', load_data, name='load_data'),
     path('', views.index, name='index'),
