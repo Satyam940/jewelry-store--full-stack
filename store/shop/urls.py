@@ -1,9 +1,18 @@
 from django.urls import path
 from . import views
+from django.core import management
+from django.http import HttpResponse
+
+def load_data(request):
+    try:
+        management.call_command('load_production_data')
+        return HttpResponse("Data loaded successfully")
+    except Exception as e:
+        return HttpResponse(f"An error occurred: {str(e)}")
 urlpatterns = [
 
     
-
+    path('load-data/', load_data, name='load_data'),
     path('', views.index, name='index'),
 
 
@@ -52,6 +61,9 @@ urlpatterns = [
 
 
 ]
+    
+
+
 # import traceback
 # from django.http import HttpResponse
 # import sys
@@ -70,9 +82,6 @@ urlpatterns = [
 #         return HttpResponse(output.getvalue(), content_type="text/plain", status=500)
 
     # path('load-production-data/', load_production_data, name='load_production_data'),
-    
-
-
 
 
 
