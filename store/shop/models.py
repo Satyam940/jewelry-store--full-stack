@@ -12,7 +12,7 @@ class ring(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     image = models.ImageField(upload_to='images/', blank=True, null=True)
     image_hover = models.ImageField(upload_to='images/', blank=True, null=True)
-    description = models.TextField()
+    description = models.TextField(max_length=400)
     stock = models.IntegerField(default=10)
     like_count = models.PositiveIntegerField(default=0)
     liked_by = models.ManyToManyField(User, related_name='liked_rings')
@@ -33,11 +33,11 @@ class ring(models.Model):
 
     
 class Necklace(models.Model):
-    name = models.CharField(max_length=10000)
-    price = models.DecimalField(max_digits=10000 , decimal_places=2)
+    name = models.CharField(max_length=255)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
     image = models.ImageField(upload_to='image/', blank=True, null=True)
     image_hover = models.ImageField(upload_to='images/', blank=True, null=True)
-    description= models.TextField(max_length=10000)
+    description= models.TextField(max_length=500)
     stock = models.IntegerField(default=10)
     like_count = models.PositiveIntegerField(default=0)
     liked_by = models.ManyToManyField(User, related_name='liked_necklace')
@@ -58,11 +58,11 @@ class Necklace(models.Model):
     
     
 class Bangles(models.Model):
-    name = models.CharField(max_length=10000)
-    price = models.DecimalField(max_digits=10000 , decimal_places=2)
+    name = models.CharField(max_length=255)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
     image = models.ImageField(upload_to='image/', blank=True, null=True)
     image_hover = models.ImageField(upload_to='images/', blank=True, null=True)
-    description= models.TextField(max_length=10000)
+    description= models.TextField(max_length=500)
     stock = models.IntegerField(default=10)
     like_count = models.PositiveIntegerField(default=0)
     liked_by = models.ManyToManyField(User, related_name='liked_bangles')
