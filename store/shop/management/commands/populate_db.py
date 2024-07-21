@@ -9,7 +9,7 @@ class Command(BaseCommand):
         # Check if the data has already been loaded
         from django.contrib.auth.models import User
         if User.objects.count() == 0:
-            fixture_file = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))), 'data.json')
+            fixture_file = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))), 'store/data.json')
             if os.path.exists(fixture_file):
                 try:
                     management.call_command('loaddata', fixture_file)
