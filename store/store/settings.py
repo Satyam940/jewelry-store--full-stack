@@ -101,10 +101,10 @@ WSGI_APPLICATION = 'store.wsgi.application'
 # }
 
 
-DATABASE_URL = os.getenv('DATABASE_URL', 'sqlite:///db.sqlite3')
+
 
 DATABASES = {
-    'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600)
+    'default': dj_database_url.config(default='postgresql://joyful_jewels_user:D4bdG9ez6OZWglEMrjVq6Ua00IkwHBCd@dpg-cqdur39u0jms7391mbkg-a.singapore-postgres.render.com/joyful_jewels')
 }
 
 # Password validation
