@@ -33,7 +33,7 @@ if __name__ == "__main__":
     sys.path.insert(0, str(parent_dir))
     sys.path.insert(0, str(current_dir))
 
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "store.store.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "store.settings")
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
