@@ -14,11 +14,10 @@ from decimal import Decimal
 from django.views.decorators.cache import cache_page
 
 
-
-import traceback
+import io
 from django.http import HttpResponse
 from django.core import management
-import io
+import traceback
 
 def load_production_data(request):
     output = io.StringIO()
@@ -29,6 +28,7 @@ def load_production_data(request):
         output.write(f"An error occurred: {str(e)}\n")
         output.write(traceback.format_exc())
         return HttpResponse(output.getvalue(), content_type="text/plain", status=500)
+
 
 
 
