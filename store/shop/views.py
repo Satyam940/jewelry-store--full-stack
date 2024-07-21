@@ -14,22 +14,6 @@ from decimal import Decimal
 from django.views.decorators.cache import cache_page
 
 
-import io
-from django.http import HttpResponse
-from django.core import management
-import traceback
-
-def load_production_data(request):
-    output = io.StringIO()
-    try:
-        management.call_command('load_production_data', stdout=output, stderr=output)
-        return HttpResponse(output.getvalue(), content_type="text/plain")
-    except Exception as e:
-        output.write(f"An error occurred: {str(e)}\n")
-        output.write(traceback.format_exc())
-        return HttpResponse(output.getvalue(), content_type="text/plain", status=500)
-
-
 
 
 def index(request):
@@ -441,43 +425,19 @@ def order_detail(request, order_id):
         # 'order_count':order_count
     })
 
-# @login_required
-# def create_order(request):
-#     if request.method == 'POST':
-#         form = OrderForm(request.POST)
-#         if form.is_valid():
-#             order = form.save(commit=False)
-#             order.user = request.user
+# import io
+# from django.http import HttpResponse
+# from django.core import management
+# import traceback
 
-#             cart_items = CartItem.objects.filter(user=request.user)
-#             total_amount = sum(item.content_object.price * item.quantity for item in cart_items)
-#             tax_rate = Decimal('5.0')
-#             order.tax_amount = total_amount * (tax_rate / 100)
-#             order.store_pickup = Decimal('150')
-#             order.discount = Decimal('500')
-#             order.final_amount = total_amount + order.tax_amount + order.store_pickup - order.discount
-#             order.total_amount = total_amount
-#             order.save()
+# def load_production_data(request):
+#     output = io.StringIO()
+#     try:
+#         management.call_command('load_production_data', stdout=output, stderr=output)
+#         return HttpResponse(output.getvalue(), content_type="text/plain")
+#     except Exception as e:
+#         output.write(f"An error occurred: {str(e)}\n")
+#         output.write(traceback.format_exc())
+#         return HttpResponse(output.getvalue(), content_type="text/plain", status=500)
 
 
-#             # Create Razorpay order
-#             client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
-#             razorpay_order = client.order.create({
-#                 'amount': int(order.final_amount * 100),  # Amount in paise
-#                 'currency': 'INR',
-#                 'payment_capture': '1'
-#             })
-#             order.razorpay_order_id = razorpay_order['id']
-#             order.save()
-
-#             context = {
-#                 'order': order,
-#                 'razorpay_order_id': razorpay_order['id'],
-#                 'razorpay_key': settings.RAZORPAY_KEY_ID,
-#                 'amount': int(order.final_amount * 100),  # Amount in paise
-#             }
-#             return render(request, 'payment/payment_page.html', context)
-#     else:
-#         form = OrderForm()
-    
-#     return render(request, 'payment/create_order.html', {'form': form})
