@@ -14,6 +14,24 @@ from decimal import Decimal
 from django.views.decorators.cache import cache_page
 
 
+
+import traceback
+from django.http import HttpResponse
+from django.core import management
+import io
+
+def load_production_data(request):
+    output = io.StringIO()
+    try:
+        management.call_command('load_production_data', stdout=output, stderr=output)
+        return HttpResponse(output.getvalue(), content_type="text/plain")
+    except Exception as e:
+        output.write(f"An error occurred: {str(e)}\n")
+        output.write(traceback.format_exc())
+        return HttpResponse(output.getvalue(), content_type="text/plain", status=500)
+
+
+
 def index(request):
     return render(request , 'index.html')
 
