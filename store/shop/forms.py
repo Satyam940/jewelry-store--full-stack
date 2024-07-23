@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Review_Ring, Review_Necklace , Order, Review_bangle
+from .models import Review_Ring, Review_Necklace , Order, Review_bangle,OTP
 from django.shortcuts import get_object_or_404
 
 
@@ -44,3 +44,8 @@ class OrderForm(forms.ModelForm):
         model = Order
         fields = ['name','address' , 'email', 'phone_number', 'city', 'state']
 
+
+
+
+class otpform(forms.Form):
+    otp_code = forms.IntegerField(required=True)

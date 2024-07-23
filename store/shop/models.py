@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
+import random
 
 time = timezone.now()
 
@@ -164,3 +165,13 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.quantity} of {self.content_object} in Order #{self.order.id}"
+
+
+class OTP(models.Model):
+    user  = models.OneToOneField(User , on_delete=models.CASCADE)
+    otp_code = models.IntegerField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def generate_otp(self):
+        self.otp_code = random.randint(100000 , 999999)
+        self.save()

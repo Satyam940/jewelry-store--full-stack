@@ -1,17 +1,22 @@
 from django.shortcuts import render , redirect
 from django.shortcuts import get_object_or_404
-from django.contrib.auth import login , authenticate
+from django.contrib.auth import login , authenticate, logout
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
-from .models import ring,Necklace,CartItem,Review_Ring, Review_Necklace,Order,OrderItem, Bangles, Review_bangle
-from .forms import SignUpForm,Ring_Review,Necklace_Review,OrderForm,Bangle_Review
+from .models import ring,Necklace,CartItem,Review_Ring, Review_Necklace,Order,OrderItem, Bangles, Review_bangle , OTP
+from .forms import SignUpForm,Ring_Review,Necklace_Review,OrderForm,Bangle_Review , otpform
 from django.contrib.auth.forms import AuthenticationForm
 from django.conf import settings
 import razorpay
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from decimal import Decimal
-from django.views.decorators.cache import cache_page
+from django.core.mail import send_mail
+from django.utils import timezone
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+
 
 
 
@@ -252,12 +257,97 @@ def signup(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password1'])
+            user.is_active = False
             form.save()
-            return redirect('login_view')
+            otp = OTP(user = user)
+            otp.generate_otp()
+            request.session['user_id'] = user.id 
+            request.session ['user_email'] = user.email
+            subject = 'Verify Your Account'
+        
+            message = render_to_string('registration/otp.html', {
+                'user':user,
+                'otp_code':otp.otp_code
+
+            })
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [user.email]
+
+            email = EmailMessage(subject, message, email_from, recipient_list)
+            email.content_subtype = "html" 
+            email.send()
+            
+
+
+
+            return redirect('verify_otp')
     else:
         form = SignUpForm()
     return render( request , 'registration/register.html', {'form':form})
 
+
+def verify_otp(request):
+ 
+    user_id = request.session.get('user_id')
+
+    
+
+    if user_id:
+        
+        user = get_object_or_404(User, id=user_id)
+
+        user_email = user.email
+
+    if request.method == 'POST':
+        form = otpform(request.POST)
+        if form.is_valid():
+            otp_code = form.cleaned_data['otp_code']
+
+            
+            otp = OTP.objects.filter(user=user).first()
+            
+
+            if otp and otp_code == otp.otp_code:
+                user.is_active = True
+                user.save()
+                login(request, user)
+                return redirect('index')
+            else:
+                form.add_error('otp_code', 'Invalid OTP')
+        else:
+            form.add_error(None, 'Form is not valid')
+    else:
+        form = otpform()
+        user_id = request.session.get('user_id')
+        if user_id:
+            user = User.objects.get(id=user_id)
+            otp = OTP.objects.get(user=user)
+            otp_code = otp.otp_code
+
+    return render(request, 'registration/verify_otp.html', {
+        'form': form,
+        'user_email': user_email,
+        'otp_code':otp_code
+    })
+
+
+
+def resend_otp(request):
+
+    user_id  = request.session.get('user_id')
+    if user_id:
+        user  = User.objects.get(id = user_id)
+        otp = OTP.objects.get(user=user)
+        otp.generate_otp()
+        request.session ['user_email'] = user.email
+        
+
+        Subject = 'Verify your account'
+        message = f'Your otp code {otp.otp_code}'
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = [user.email]
+        send_mail(Subject, message, email_from, recipient_list)
+    return redirect('verify_otp')
 
 
 def login_view(request):
@@ -282,10 +372,10 @@ def login_view(request):
     return render(request, 'registration/login.html', {'form': form, 'error_message': error_message})
 
 
-def logout(request):
-    # current_page = request.GET.get('next','/')
-    logout(request)
-    return redirect('index')
+def logout_view(request):
+    if request.method == 'POST':  # For added security, you might still want to use POST
+        logout(request)
+        return redirect('index')
 
             
     
@@ -376,6 +466,24 @@ def payment_success(request):
             payment = client.payment.fetch(params_dict['razorpay_payment_id'])
             CartItem.objects.filter(user=request.user).delete()
             order = get_object_or_404(Order , razorpay_order_id=params_dict['razorpay_order_id'])
+
+
+            Subject = 'Order Confirmation - Your Order has been placed'
+            email_from = settings.EMAIL_HOST_USER
+            to_email = [request.user.email]
+            message = render_to_string('order/email.html', {
+                'order':order,
+                'payment':payment['amount'] / 100,
+                'request':request,
+                "delivery_date":"27-07-2024"
+            })
+            email = EmailMessage(Subject , message , email_from , to_email)
+            email.content_subtype = 'html'
+            email.send()
+
+        
+            
+
 
             return render(request, 'payment/payment_success.html', {
                 'payment_id': payment['id'],

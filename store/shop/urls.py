@@ -38,8 +38,10 @@ urlpatterns = [
 
 
     path('signup/', views.signup, name='signup'),
+    path('verify-otp/', views.verify_otp, name='verify_otp'),
+    path('resend-otp/', views.resend_otp, name='resend_otp'),
     path('login/', views.login_view, name='login_view'),
-    path('logout/', views.logout, name='logout'),
+    path('logout/', views.logout_view, name='logout_view'),
 
 
 

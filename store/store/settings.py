@@ -67,12 +67,12 @@ MIDDLEWARE = [
     'django.middleware.gzip.GZipMiddleware',
 ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-ROOT_URLCONF = 'store.store.urls'
+ROOT_URLCONF = 'store.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['store/templates'],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -188,3 +188,14 @@ LOGGING = {
         'level': 'DEBUG',
     },
 }
+
+
+
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'jewelsjoyful0@gmail.com'
+EMAIL_HOST_PASSWORD = 'mqdi dbym nyoc mqsv'
+
