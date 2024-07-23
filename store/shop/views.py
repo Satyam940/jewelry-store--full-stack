@@ -16,6 +16,7 @@ from django.core.mail import send_mail
 from django.utils import timezone
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
+from django.contrib import messages
 
 
 
@@ -255,10 +256,33 @@ def signup(request):
         form= SignUpForm(request.POST)
 
         if form.is_valid():
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password1']
+            existing_user = User.objects.filter(username=username).first()
+            existing_email_user = User.objects.filter(email=email).first()
+
+            if existing_user:
+                if not existing_user.is_active:
+                    
+                    existing_user.delete()
+                else:
+                    messages.error(request, 'Username already taken.')
+                    return render(request, 'registration/register.html', {'form': form})
+            
+            if existing_email_user:
+                if not existing_email_user.is_active:
+                  
+                    existing_email_user.delete()
+                else:
+                    messages.error(request, 'Email already registered.')
+                    return render(request, 'registration/register.html', {'form': form})
+
+           
             user = form.save(commit=False)
-            user.set_password(form.cleaned_data['password1'])
-            user.is_active = False
-            form.save()
+            user.set_password(password)
+            user.is_active = False  
+            user.save()
             otp = OTP(user = user)
             otp.generate_otp()
             request.session['user_id'] = user.id 
