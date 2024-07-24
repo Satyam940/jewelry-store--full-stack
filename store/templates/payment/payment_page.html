@@ -25,9 +25,9 @@
             amount: "{{ amount }}",
             currency: "INR",
             order_id: "{{ razorpay_order_id }}",
-            name: "Satyam Mishra",
+            name: "Joyful Jewels",
             description: "Purchase Description",
-            image: "https://your-logo-url",
+            image: "{% static "TanishqLogo.png" %}",
             handler: function(response) {
                 document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
                 document.getElementById('razorpay_signature').value = response.razorpay_signature;
