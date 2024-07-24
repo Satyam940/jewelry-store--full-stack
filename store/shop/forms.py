@@ -5,11 +5,29 @@ from .models import Review_Ring, Review_Necklace , Order, Review_bangle,OTP
 from django.shortcuts import get_object_or_404
 
 
+
+
 class SignUpForm(UserCreationForm):
-    email = forms.EmailField(max_length=254 , required=True)
+    
+
     class Meta:
         model = User
-        fields=('username', 'email','password1','password2')
+        fields = ('username', 'email', 'password1', 'password2')
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        print(f"Cleaning username: {username}")  # Debug print
+        if User.objects.filter(username=username).exists():
+            user = User.objects.get(username=username)
+            print(f"Existing user found: {user.username}, active: {user.is_active}")  # Debug print
+            if user.is_active:
+                raise forms.ValidationError("A user with that username already exists.")
+            else:
+                print("Existing user is inactive, allowing update")  # Debug print
+        else:
+            print("Username is new")  # Debug print
+        return username
+
 
 
 

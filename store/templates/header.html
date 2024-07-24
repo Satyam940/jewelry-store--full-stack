@@ -50,11 +50,10 @@
             <!-- Mobile Menu -->
             <div id="mobile-menu" class="lg:hidden hidden absolute top-16 right-0 mt-2 w-56 origin-top-right bg-white divide-y divide-gray-100 rounded-lg shadow-lg dark:bg-gray-700 dark:divide-gray-600 z-50">
               <ul class="py-1">
-                <li><a href="#" class="block px-4 py-2 text-sm text-gray-900 dark:hover:bg-gray-600">Home</a></li>
-                <li><a href="#" class="block px-4 py-2 text-sm text-gray-900 dark:hover:bg-gray-600">Best Sellers</a></li>
-                <li><a href="#" class="block px-4 py-2 text-sm text-gray-900 dark:hover:bg-gray-600">Gift Ideas</a></li>
-                <li><a href="#" class="block px-4 py-2 text-sm text-gray-900 dark:hover:bg-gray-600">Today's Deals</a></li>
-                <li><a href="#" class="block px-4 py-2 text-sm text-gray-900 dark:hover:bg-gray-600">Sell</a></li>
+                <li><a href="{% url "index" %}" class="block px-4 py-2 text-sm text-gray-900 dark:hover:bg-gray-600">Home</a></li>
+                <li><a href="{% url "ring_list" %}" class="block px-4 py-2 text-sm text-gray-900 dark:hover:bg-gray-600">Rings</a></li>
+                <li><a href="{% url 'necklace_list' %}" class="block px-4 py-2 text-sm text-gray-900 dark:hover:bg-gray-600">Necklace</a></li>
+                <li><a href="{% url 'bangles_list' %}" class="block px-4 py-2 text-sm text-gray-900 dark:hover:bg-gray-600">Bangles</a></li>
               </ul>
             </div>
           </div>
@@ -130,14 +129,15 @@
                 
               </div>
               
-                <!-- Mobile Menu Button -->
-                 <button type="button" data-collapse-toggle="mobile-menu" aria-controls="mobile-menu" aria-expanded="false" class="inline-flex lg:hidden items-center justify-center hover:bg-gray-100 rounded-md dark:hover:bg-gray-700 p-2 text-gray-900 dark:text-white">
-                    <span class="sr-only">Open Menu</span>
-                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h14"/>
-                    </svg>
-              </button>
+              
             </div>
+            <!-- Mobile Menu Button -->
+            <button type="button" data-collapse-toggle="mobile-menu" aria-controls="mobile-menu" aria-expanded="false" class="inline-flex lg:hidden items-center justify-center hover:bg-gray-100 rounded-md dark:hover:bg-gray-700 p-2 text-gray-900 dark:text-white">
+              <span class="sr-only">Open Menu</span>
+              <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h14"/>
+              </svg>
+        </button>
           </div>
         </div>
       </nav>

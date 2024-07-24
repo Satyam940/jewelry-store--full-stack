@@ -252,64 +252,50 @@ def cart_detail(request):
 
 
 def signup(request):
-    if request.method=='POST':
-        form= SignUpForm(request.POST)
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
 
         if form.is_valid():
-            username = form.cleaned_data['username']
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password1']
-            existing_user = User.objects.filter(username=username).first()
-            existing_email_user = User.objects.filter(email=email).first()
-
-            if existing_user:
-                if not existing_user.is_active:
-                    
-                    existing_user.delete()
-                else:
-                    messages.error(request, 'Username already taken.')
-                    return render(request, 'registration/register.html', {'form': form})
-            
-            if existing_email_user:
-                if not existing_email_user.is_active:
-                  
-                    existing_email_user.delete()
-                else:
-                    messages.error(request, 'Email already registered.')
-                    return render(request, 'registration/register.html', {'form': form})
+            username = form.cleaned_data.get('username')
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password1')
 
            
-            user = form.save(commit=False)
+            user = User.objects.create(username=username, email=email)
             user.set_password(password)
-            user.is_active = False  
+            user.is_active = False
             user.save()
-            otp = OTP(user = user)
-            otp.generate_otp()
-            request.session['user_id'] = user.id 
-            request.session ['user_email'] = user.email
-            subject = 'Verify Your Account'
-        
-            message = render_to_string('registration/otp.html', {
-                'user':user,
-                'otp_code':otp.otp_code
 
+            # Generate and save OTP
+            otp = OTP(user=user)
+            otp.generate_otp()
+            otp.save()
+
+            request.session['user_id'] = user.id
+            request.session['user_email'] = user.email
+
+            # Send verification email
+            subject = 'Verify Your Account'
+            message = render_to_string('registration/otp.html', {
+                'user': user,
+                'otp_code': otp.otp_code
             })
             email_from = settings.EMAIL_HOST_USER
             recipient_list = [user.email]
 
             email = EmailMessage(subject, message, email_from, recipient_list)
-            email.content_subtype = "html" 
+            email.content_subtype = "html"
             email.send()
-            
-
-
 
             return redirect('verify_otp')
+        else:
+            print(f"Form errors: {form.errors}")  # Debug print
     else:
         form = SignUpForm()
-    return render( request , 'registration/register.html', {'form':form})
 
+    return render(request, 'registration/register.html', {'form': form})
 
+           
 def verify_otp(request):
  
     user_id = request.session.get('user_id')
