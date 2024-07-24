@@ -67,12 +67,12 @@ MIDDLEWARE = [
     'django.middleware.gzip.GZipMiddleware',
 ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-ROOT_URLCONF = 'store.urls'
+ROOT_URLCONF = 'store.store.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': ['store/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
