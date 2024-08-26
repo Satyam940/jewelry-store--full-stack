@@ -17,6 +17,7 @@ import os
 
 
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -64,7 +65,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # "django_browser_reload.middleware.BrowserReloadMiddleware",
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django.middleware.gzip.GZipMiddleware',
+    'django.middleware.gzip.GZipMiddleware',    
 ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 ROOT_URLCONF = 'store.store.urls'
@@ -100,12 +101,24 @@ WSGI_APPLICATION = 'store.wsgi.application'
 #     }
 # }
 
-
-
-
 DATABASES = {
-    'default': dj_database_url.config(default='postgresql://joyful_jewels_user:D4bdG9ez6OZWglEMrjVq6Ua00IkwHBCd@dpg-cqdur39u0jms7391mbkg-a.singapore-postgres.render.com/joyful_jewels')
+  'default': {
+    'ENGINE': 'django.db.backends.postgresql',
+    'NAME': 'joyful_jewels',
+    'USER':'joyful_jewels_owner',
+    'PASSWORD': 'ZipRQJM4ear2',
+    'HOST': 'ep-icy-leaf-a5rj1xhn.us-east-2.aws.neon.tech',
+    'PORT': '5432',
+    'OPTIONS': {
+      'sslmode': 'require',
+    },
+  }
 }
+
+
+# DATABASES = {
+#     'default': dj_database_url.config(default='postgresql://joyful_jewels_user:D4bdG9ez6OZWglEMrjVq6Ua00IkwHBCd@dpg-cqdur39u0jms7391mbkg-a.singapore-postgres.render.com/joyful_jewels')
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
