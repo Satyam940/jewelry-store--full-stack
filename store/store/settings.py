@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-x+tv7a#y&2km*x!1i^d@c6fko7*naq%-a6i)pt$!d 8h&@55dp
 RAZORPAY_KEY_ID='rzp_test_i56vmoZfmePp75'
 RAZORPAY_KEY_SECRET='WWbR7wRthiHjFDFyfg6ETUcH'
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['jewelry-store-837q.onrender.com','joyful-jewels.onrender.com','127.0.0.1','localhost']
 
