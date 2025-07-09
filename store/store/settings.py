@@ -202,6 +202,9 @@ LOGGING = {
     },
 }
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # Only if you have a /static folder with dev assets
+]
 
 
 # Email settings
